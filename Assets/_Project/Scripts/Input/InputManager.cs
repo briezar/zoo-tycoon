@@ -2,7 +2,7 @@ using GameDevKit;
 using UnityEngine;
 using static InputSystem_Actions;
 
-namespace ZooTycoon
+namespace ZooTycoon.Input
 {
     public class InputManager : SingletonBehaviour<InputManager>
     {
@@ -29,6 +29,22 @@ namespace ZooTycoon
 
         private void OnEnable() => _inputActions.Enable();
         private void OnDisable() => _inputActions.Disable();
+
+        public static void Enable_PlayerMovement(bool enable)
+        {
+            if (!IsValid) { return; }
+
+            if (enable) { PlayerMovement.Enable(); }
+            else { PlayerMovement.Disable(); }
+        }
+
+        public static void Enable_UI(bool enable)
+        {
+            if (!IsValid) { return; }
+
+            if (enable) { UI.Enable(); }
+            else { UI.Disable(); }
+        }
 
         private static void EnsureInstance()
         {

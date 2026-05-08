@@ -119,13 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621c052b30f4dce49a597f6650c4bbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _renderers: []
   _outlineLayer:
     serializedVersion: 0
     m_Bits: 256

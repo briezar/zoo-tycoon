@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameDevKit;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,34 +7,32 @@ namespace ZooTycoon
 {
     public class Door : MonoBehaviour
     {
-        [SerializeField] private Animator _animator;
-        [SerializeField] private AnimationClip _openAnim, _closeAnim;
-
-        private AnimationHash _openAnimHash, _closeAnimHash;
-
         public UnityEvent OnOpenDoor, OnCloseDoor;
 
-        private void Start()
-        {
-            _openAnimHash = _openAnim.name;
-            _closeAnimHash = _closeAnim.name;
-        }
+        public bool IsOpen { get; private set; } = false;
+
+        private readonly Dictionary<Collider, DoorInteractable> _interactableLookup = new();
 
         public void Open()
         {
+            IsOpen = true;
             OnOpenDoor?.Invoke();
-            _animator.Play(_openAnimHash);
         }
 
         public void Close()
         {
+            IsOpen = false;
             OnCloseDoor?.Invoke();
-            _animator.Play(_closeAnimHash);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out DoorInteractable interactable) && interactable.AutoInteract)
+            if (!other.TryGetComponent(out DoorInteractable interactable)) { return; }
+            _interactableLookup[other] = interactable;
+
+            if (IsOpen) { return; }
+
+            if (interactable.AutoInteract)
             {
                 Open();
             }
@@ -41,7 +40,10 @@ namespace ZooTycoon
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out DoorInteractable interactable) && interactable.AutoInteract)
+            if (!_interactableLookup.Remove(other, out var interactable)) { return; }
+            if (_interactableLookup.Count > 0) { return; }
+
+            if (interactable.AutoInteract)
             {
                 Close();
             }

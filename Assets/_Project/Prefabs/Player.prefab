@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2356080957795881014}
   - component: {fileID: 8830722568611185265}
+  - component: {fileID: 5601065360187516722}
+  - component: {fileID: 6754171819818352935}
   - component: {fileID: 2828375484863635898}
   - component: {fileID: 3502917127239703353}
   - component: {fileID: 4783204530822399850}
@@ -51,14 +53,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d09547d714bdb4f8e4bcfad0f66473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Movement>k__BackingField: {fileID: 5601065360187516722}
+--- !u!114 &5601065360187516722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581373710328705506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6d1c62551493440b8bcd6846b609be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _agent: {fileID: 2828375484863635898}
+  _linkMover: {fileID: 3502917127239703353}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  _animator: {fileID: 4084436632968928971}
-  _linkMover: {fileID: 3502917127239703353}
+  _animator: {fileID: 6754171819818352935}
   WalkSpeed: 9
   RunSpeed: 15
+--- !u!114 &6754171819818352935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581373710328705506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8950c9ae6dc0a4e85466aa5a512f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4084436632968928971}
+  _moveSpeedParam:
+    _paramName: Move Speed
+  _attackAnim:
+    _paramName: attack-melee-right
 --- !u!195 &2828375484863635898
 NavMeshAgent:
   m_ObjectHideFlags: 0

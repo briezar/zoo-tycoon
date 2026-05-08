@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1918332335044507127}
-  - component: {fileID: 5672371308635429836}
+  - component: {fileID: 2996773508470810434}
   m_Layer: 0
   m_Name: WanderArea
   m_TagString: Untagged
@@ -32,27 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7562480379485333336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5672371308635429836
-SphereCollider:
+--- !u!114 &2996773508470810434
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798427325123869426}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 8.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566df8122cd18b545bd7a0ee3eb67289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radius: 8.6
 --- !u!1 &3548730211847517536
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cba18fc8f4690b47b94f97830905912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wanderArea: {fileID: 2996773508470810434}
 --- !u!54 &3286898815062846696
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,0 +1,43 @@
+﻿﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
+using Object = UnityEngine.Object;
+
+namespace ZooTycoon.UI
+{
+    public class UIManager
+    {
+        private static IUIManager _impl;
+
+        public static bool IsReady => _impl != null;
+        public static Camera Camera => _impl.Camera;
+        public static EventSystem EventSystem => _impl.EventSystem;
+        public static Vector2 ReferenceResolution => _impl.ReferenceResolution;
+        public static float DefaultCameraOrthoSize => _impl.DefaultCameraOrthoSize;
+        public static bool IsInteractable => _impl.IsInteractable;
+
+        public static UIView CurrentView => _impl.CurrentView;
+        public static UIView PreviousView => _impl.PreviousView;
+
+        public static void SetImplementation(IUIManager impl)
+        {
+            Debug.Log($"SetImplementation for UIManager: [{impl.GetType().Name}]", impl as Object);
+            _impl = impl;
+        }
+
+        public static void DisableInteractionFor(float durationSeconds) => _impl.DisableInteractionFor(durationSeconds);
+        public static void SetInteractable(bool interactable, bool force = false) => _impl.SetInteractable(interactable, force);
+        public static UniTask FadeTransition(FadeSetting fadeSetting) => _impl.FadeTransition(fadeSetting);
+        public static void EnableLoading(bool enable, string text = "") => _impl.EnableLoading(enable, text);
+        public static T GetUI<T>() where T : UIView, new() => _impl.PreloadUI<T>();
+        public static T PreloadUI<T>() where T : UIView, new() => _impl.PreloadUI<T>();
+        public static UniTask ShowUI(UIView view) => _impl.ShowUI(view);
+        public static T ShowUI<T>() where T : UIView, new() => _impl.ShowUI<T>();
+        public static UniTask Hide<T>(bool immediate = false) where T : UIView, new() => _impl.Hide<T>(immediate);
+        public static UniTask Hide(UIView view, bool immediate = false) => _impl.Hide(view, immediate);
+
+    }
+}

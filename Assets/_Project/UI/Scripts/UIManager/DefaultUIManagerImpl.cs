@@ -1,0 +1,339 @@
+﻿﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Linq;
+using GameDevKit.ObjectReferences;
+using EditorAttributes;
+using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem;
+
+namespace ZooTycoon.UI
+{
+    public class DefaultUIManagerImpl : MonoBehaviour, IUIManager
+    {
+        [SerializeField] private Camera _camera;
+        [SerializeField] private EventSystem _eventSystem;
+        [SerializeField] private Transform _uiLayer, _popupLayer;
+        [SerializeField] private UIResourceMapSO _uiResourceMap;
+        [SerializeField] private UIManagerAnimation _animation;
+        [SerializeField] private Loading _loading;
+
+        public Camera Camera => _camera;
+        public EventSystem EventSystem => _eventSystem;
+        public bool IsInteractable => EventSystem.isActiveAndEnabled;
+        public Vector2 ReferenceResolution { get; private set; }
+        public float DefaultCameraOrthoSize => ReferenceResolution.y * 0.5f * 0.01f;
+
+        public UIView CurrentView => _views.LastOrDefault();
+        public UIView PreviousView => _views.Count < 2 ? null : _views[^2];
+
+        private readonly List<UIView> _views = new();
+
+        private readonly Dictionary<Type, List<UIView>> _instantiatedViewMap = new();
+
+        private int _blockCount = 0;
+
+        private void Awake()
+        {
+            // https://developer.android.com/training/multiscreen/screendensities#dips-pels
+            var defaultDragThreshold = EventSystem.pixelDragThreshold;
+            var acceptableDragThreshold = (int)(defaultDragThreshold * (Screen.dpi / 160f));
+            EventSystem.pixelDragThreshold = Mathf.Max(defaultDragThreshold, acceptableDragThreshold);
+
+            ReferenceResolution = GetComponentInChildren<CanvasScaler>().referenceResolution;
+
+            var layers = new Transform[] { _uiLayer, _popupLayer };
+
+            foreach (var view in layers.SelectMany(layer => layer.GetComponentsInChildren<UIView>(true)))
+            {
+                AddInstantiatedUI(view);
+
+                if (!view.didAwake)
+                {
+                    view.gameObject.SetActive(true);
+                    view.gameObject.SetActive(false);
+                }
+            }
+
+            UIManager.SetImplementation(this);
+        }
+
+        private Transform GetLayer(UIView view) => view switch
+        {
+            IFullscreenUI => _uiLayer,
+            IPopupUI => _popupLayer,
+            _ => _uiLayer,
+        };
+
+#if UNITY_EDITOR
+        private List<string> _setInteractableCallers = new();
+        [Button]
+        private void CheckInteractableCaller()
+        {
+            Debug.Log(_setInteractableCallers.JoinToString("\n"));
+            _setInteractableCallers.Clear();
+        }
+#endif
+
+        public async UniTask DisableInteractionFor(float durationSeconds)
+        {
+            SetInteractable(false);
+            await UniTask.WaitForSeconds(durationSeconds);
+            SetInteractable(true);
+        }
+
+#if DEV_BUILD || UNITY_EDITOR
+        private IngameDebugConsole.DebugLogPopup _debugLogPopup;
+        private void Update()
+        {
+            if (IsInteractable) { return; }
+
+            if (Pointer.current.press.wasPressedThisFrame)
+            {
+                var debugConsole = IngameDebugConsole.DebugLogManager.Instance;
+                _debugLogPopup ??= debugConsole.GetComponentInChildren<IngameDebugConsole.DebugLogPopup>(true);
+                var debugConsolePopupPos = _debugLogPopup.transform.position;
+                if (Vector2.Distance(Pointer.current.position.ReadValue(), debugConsolePopupPos) < 80)
+                {
+                    SetInteractable(true, true);
+                    debugConsole.ShowLogWindow();
+                }
+            }
+        }
+#endif
+
+        public void SetInteractable(bool interactable, bool force = false)
+        {
+#if UNITY_EDITOR
+            var collectStackTrace = true;
+            if (collectStackTrace)
+            {
+                try
+                {
+                    var callerInfo = GeneralUtils.GetMethodCallerInfo();
+                    var interactableState = interactable.ToString().Colorize(interactable ? Color.green : Color.red);
+
+                    callerInfo += $", SetInteractable({interactableState}) - [{DateTime.Now:HH:mm:ss.F2}]";
+
+                    _setInteractableCallers.AddFirst(callerInfo);
+                    if (_setInteractableCallers.Count > 10)
+                    {
+                        _setInteractableCallers.RemoveLast();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning(ex);
+                }
+            }
+#endif
+
+            if (force)
+            {
+                _blockCount = 0;
+                EventSystem.enabled = interactable;
+                return;
+            }
+
+            if (!interactable)
+            {
+                EventSystem.enabled = false;
+                _blockCount++;
+                return;
+            }
+
+            _blockCount--;
+
+            if (_blockCount <= 0)
+            {
+                _blockCount = 0;
+                EventSystem.enabled = true;
+            }
+        }
+
+        public UniTask FadeTransition(FadeSetting fadeSetting) => _animation.FadeTransition(fadeSetting);
+
+        public void EnableLoading(bool enable, string text = "")
+        {
+            _loading.gameObject.SetActive(enable);
+            _loading.Text.text = text;
+        }
+
+        private void AddInstantiatedUI(UIView view)
+        {
+            var viewType = view.GetType();
+            if (_instantiatedViewMap.TryGetValue(viewType, out var views))
+            {
+                views.Add(view);
+                return;
+            }
+
+            _instantiatedViewMap[viewType] = new() { view };
+        }
+
+        private void RemoveInstantiatedUI(UIView view)
+        {
+            var viewType = view.GetType();
+            if (_instantiatedViewMap.TryGetValue(viewType, out var views))
+            {
+                views.Remove(view);
+            }
+        }
+
+        private bool TryGetInstantiatedUI<T>(out T view) where T : UIView, new()
+        {
+            view = null;
+            var viewType = typeof(T);
+            if (_instantiatedViewMap.TryGetValue(viewType, out var views) && views.Count > 0)
+            {
+                view = views[^1] as T;
+                return true;
+            }
+
+            return false;
+        }
+
+        public T PreloadUI<T>() where T : UIView, new()
+        {
+            var view = GetOrInstantiateUI<T>();
+            if (view == null) { return null; }
+            view.gameObject.SetActive(false);
+            return view;
+        }
+
+        public async UniTask ShowUI(UIView view)
+        {
+            var viewName = view.GetType().Name;
+            if (view == CurrentView)
+            {
+                Debug.LogWarning($"Showing the current view again: [{viewName}]");
+                return;
+            }
+
+            _views.Add(view);
+            view.transform.SetAsLastSibling();
+
+            if (view is PopupUI popup)
+            {
+                if (popup.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
+                {
+                    _animation.PopupBgDim.PositionBelowUI(popup);
+                    _animation.FadePopupDim(true);
+                }
+            }
+
+            view.gameObject.SetActive(true);
+            (view as IUIView).OnShow();
+
+            SetInteractable(false);
+            await UniTask.WaitForSeconds(view.TransitionInDuration);
+            SetInteractable(true);
+        }
+
+        public T ShowUI<T>() where T : UIView, new()
+        {
+            var view = GetOrInstantiateUI<T>();
+            if (view == null) { return null; }
+
+            ShowUI(view);
+            return view;
+        }
+
+        public async UniTask Hide<T>(bool immediate = false) where T : UIView, new()
+        {
+            var viewName = typeof(T).Name;
+            if (!TryGetInstantiatedUI<T>(out var baseView))
+            {
+                Debug.LogWarning($"View does not exist: {viewName}");
+                return;
+            }
+            await Hide(baseView, immediate);
+        }
+
+        public async UniTask Hide(UIView view, bool immediate = false)
+        {
+            if (view == null)
+            {
+                Debug.LogWarning($"[ViewManager] Trying to hide a null UI");
+                return;
+            }
+
+            if (_views.Count < 2)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning($"[ViewManager] Trying to hide all UIs, ignore this message if hiding {view.GetType().Name} was intended");
+#endif
+            }
+
+            _views.RemoveAll(v => v == null || v.gameObject == null || v == view);
+
+            (view as IUIView).OnHide();
+
+            for (int i = _views.Count - 1; i >= 0; i--)
+            {
+                if (_views[i] is PopupUI popup)
+                {
+                    if (popup.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
+                    {
+                        _animation.PopupBgDim.PositionBelowUI(popup);
+                        break;
+                    }
+                }
+
+                if (i == 0)
+                {
+                    if (view is PopupUI popupUI && popupUI.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
+                    {
+                        _animation.FadePopupDim(false);
+                    }
+                }
+            }
+
+            if (!immediate)
+            {
+                SetInteractable(false);
+                await UniTask.WaitForSeconds(view.TransitionOutDuration);
+                SetInteractable(true);
+            }
+
+            if (view.DestroyOnHide)
+            {
+                if (view != null && view.gameObject != null) { Destroy(view.gameObject); }
+                RemoveInstantiatedUI(view);
+            }
+            else
+            {
+                view.gameObject.SetActive(false);
+            }
+        }
+
+        private T GetOrInstantiateUI<T>() where T : UIView, new()
+        {
+            if (TryGetInstantiatedUI<T>(out var view))
+            {
+                if (view is not PopupUI popup || !popup.CanShowMultiple)
+                {
+                    return view;
+                }
+            }
+
+            view = InstantiateUI<T>();
+            return view;
+        }
+
+
+        private T InstantiateUI<T>() where T : UIView, new()
+        {
+            var resource = _uiResourceMap.LoadResource<T>();
+            if (resource == null) { return null; }
+
+            var view = Instantiate(resource, GetLayer(resource));
+            AddInstantiatedUI(view);
+            return view;
+        }
+
+    }
+}

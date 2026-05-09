@@ -50,8 +50,8 @@ namespace ZooTycoon
 
             // splashUI.SetInfo("Loading assets...");
             // splashUI.RunProgress(0.9f, 2f);
-            var sceneFlow = await LoadScene(_nextScene, LoadSceneMode.Additive);
-            sceneFlow.SetActiveScene();
+            var nextSceneFlow = await LoadScene(_nextScene, LoadSceneMode.Additive);
+            nextSceneFlow.SetActiveScene();
 
             // await sceneFlow.PrepareScene(info =>
             // {
@@ -64,12 +64,12 @@ namespace ZooTycoon
             // splashUI.SetInfo("Loading complete!");
             // await UniTask.WaitForSeconds(0.2f);
 
-            await sceneFlow.TransitionIn();
+            await nextSceneFlow.TransitionIn();
 
             // UIManager.Hide(splashUI);
 
             await SceneManager.UnloadSceneAsync(gameObject.scene);
-            await sceneFlow.TransitionOut();
+            await nextSceneFlow.TransitionOut();
         }
 
     }

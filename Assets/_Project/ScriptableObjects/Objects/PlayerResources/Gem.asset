@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fde323a47e11f6488621eb5b5a0062a, type: 3}
-  m_Name: Energy
+  m_Name: Gem
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Energy
+  <DisplayName>k__BackingField: Gem
   <Description>k__BackingField: 
-  <Icon>k__BackingField: {fileID: 21300000, guid: 2a395c4f5dd914dd2b50468e92772309, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 8661490d01fe14ee3a29db3d39f643fd, type: 3}
   _spriteAsset: {fileID: 11400000, guid: 0628cf01f78b038469afeb711fed5f7e, type: 2}
-  _spriteName: energy
-  _textColor: {r: 0.6784314, g: 1, b: 0.18431373, a: 1}
+  _spriteName: gem
+  _textColor: {r: 1, g: 0.7529412, b: 0.79607844, a: 1}

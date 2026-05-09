@@ -1,8 +1,8 @@
-using AYellowpaper.SerializedCollections;
 using GameDevKit.ObjectReferences;
 using UnityEngine;
 using EditorAttributes;
 using Newtonsoft.Json;
+using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
 using UnityEditor;

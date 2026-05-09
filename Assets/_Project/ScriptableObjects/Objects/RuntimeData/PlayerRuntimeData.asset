@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7a5d1f65bcbaf4b96719719c077d36, type: 3}
   m_Name: PlayerRuntimeData
   m_EditorClassIdentifier: 
-  <Resource>k__BackingField:
-    _resourceAmounts:
+  <ResourceData>k__BackingField:
+    _currentAmounts:
     - resource: {fileID: 11400000, guid: bbbd2ab2290f0144ba9b7df7fceaffaa, type: 2}
       amount: 0
-    - resource: {fileID: 11400000, guid: 7675f9a3c1055114b97b4a2daafeb29e, type: 2}
+    - resource: {fileID: 11400000, guid: 7c2f0c1dc4c94de4d8eed8b36cbbfe87, type: 2}
       amount: 0
+    - resource: {fileID: 11400000, guid: 7675f9a3c1055114b97b4a2daafeb29e, type: 2}
+      amount: 100
+    _maxAmounts:
+    - resource: {fileID: 11400000, guid: bbbd2ab2290f0144ba9b7df7fceaffaa, type: 2}
+      amount: 999999
+    - resource: {fileID: 11400000, guid: 7c2f0c1dc4c94de4d8eed8b36cbbfe87, type: 2}
+      amount: 999999
+    - resource: {fileID: 11400000, guid: 7675f9a3c1055114b97b4a2daafeb29e, type: 2}
+      amount: 100

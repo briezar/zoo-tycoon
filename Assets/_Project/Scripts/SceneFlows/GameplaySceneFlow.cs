@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+using ZooTycoon.UI;
 
 namespace ZooTycoon
 {
     public class GameplaySceneFlow : SceneFlow
     {
+        private void Start()
+        {
+            PrepareScene();
+        }
+        
         public override async UniTask PrepareScene(Action<ProgressInfo> progressCallback = null)
         {
             // await UniTask.WaitUntil(() => Services.IsReady);
+
+            UIManager.ShowUI<GameUI>();
 
             // Wait for game systems Start()
             await UniTask.NextFrame();

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: UI Resource Map
   m_EditorClassIdentifier: 
   _uiResourceMap:
-    _serializedList: []
+    m_Keys:
+    - ZooTycoon.UI.GameUI
+    m_Values:
+    - UIViews_Prefabs/Screens/GameUI
   _uiFolder:
     _folderAsset: {fileID: 102900000, guid: 02b5cfec45c769843b757abb0bed22e8, type: 3}
-    _folderPath: Assets/_Project/UI/UIViews_Prefabs
+    _folderPath: Assets/_Project/UI/Resources/UIViews_Prefabs

@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 3556109877
+    locked: 0
+  - name: Popup
+    uniqueID: 3629830037
+    locked: 0
+  - name: Overlay
+    uniqueID: 2879229799
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

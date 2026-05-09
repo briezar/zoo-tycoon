@@ -6,10 +6,12 @@ using UnityEngine;
 
 namespace ZooTycoon.RuntimeData
 {
+    [ResetOnExitPlayMode]
+    [RegisterToGlobalContainer]
     [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/PlayerRuntimeData")]
-    public class PlayerRuntimeDataSO : RuntimeDataSO
+    public class PlayerRuntimeDataSO : ScriptableObject
     {
-        [field: SerializeField] public PlayerResourceData Resource { get; private set; }
+        [field: SerializeField] public PlayerResourceData ResourceData { get; private set; }
 
         public static PlayerRuntimeDataSO Current { get; private set; }
 

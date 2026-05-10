@@ -12,7 +12,6 @@ namespace ZooTycoon.UI
 {
     public class EnergyBar : AdvancedBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private PlayerRuntimeDataSO _playerRuntimeData;
         [SerializeField] private Slider _energySlider;
         [SerializeField] private TMP_Text _energyText;
         [SerializeField] private Image _fillImg;
@@ -20,9 +19,12 @@ namespace ZooTycoon.UI
         [Tooltip("What color the bar would look like when below a certain amount (1 to 0). Must be descending.")]
         [SerializeField] private FloatAmount<Color>[] _progressColors;
 
+        [Header("Optional")]
+        [SerializeField] private PlayerRuntimeDataSO _playerData;
+
         protected override void OnStart()
         {
-            ScriptableObjectContainer.AssignIfNull(ref _playerRuntimeData);
+            ScriptableObjectContainer.AssignIfNull(ref _playerData);
             _energyText.gameObject.SetActive(false);
             _energySlider.onValueChanged.AddListener((_) =>
             {
@@ -33,25 +35,25 @@ namespace ZooTycoon.UI
 
         protected override void OnStartOrEnable()
         {
-            _playerRuntimeData.ResourceData.OnCurrentAmountChanged[this] += HandleResourceChanged;
-            _playerRuntimeData.ResourceData.OnMaxAmountChanged[this] += HandleMaxResourceChanged;
+            _playerData.ResourceData.OnCurrentAmountChanged[this] += HandleResourceChanged;
+            _playerData.ResourceData.OnMaxAmountChanged[this] += HandleMaxResourceChanged;
 
             _energySlider.minValue = 0;
-            _energySlider.maxValue = _playerRuntimeData.ResourceData.MaxAmounts.Get(ResourceSO_Ref.Energy).amount;
-            _energySlider.value = _playerRuntimeData.ResourceData.CurrentAmounts.Get(ResourceSO_Ref.Energy).amount;
+            _energySlider.maxValue = _playerData.ResourceData.MaxAmounts.Get(ResourceSO_Ref.Energy).amount;
+            _energySlider.value = _playerData.ResourceData.CurrentAmounts.Get(ResourceSO_Ref.Energy).amount;
         }
 
         private void Update()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
-                _playerRuntimeData.ResourceData.AddResource(new(ResourceSO_Ref.Energy, -10));
+                _playerData.ResourceData.AddResource(new(ResourceSO_Ref.Energy, -10));
             }
         }
 
         private void OnDisable()
         {
-            _playerRuntimeData.ResourceData.OnCurrentAmountChanged.Unsubscribe(this);
+            _playerData.ResourceData.OnCurrentAmountChanged.Unsubscribe(this);
         }
 
         private void HandleResourceChanged(ResourceSO resource, IntChangeInfo info)

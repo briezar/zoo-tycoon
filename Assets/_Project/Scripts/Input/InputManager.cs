@@ -1,5 +1,9 @@
+using System.Collections.Generic;
 using GameDevKit;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static InputSystem_Actions;
 
 namespace ZooTycoon.Input
@@ -22,6 +26,9 @@ namespace ZooTycoon.Input
 
         private InputSystem_Actions _inputActions;
 
+        private static readonly List<RaycastResult> _raycastResults = new();
+        private static readonly Dictionary<EventSystem, PointerEventData> _pointerEventDataLookup = new();
+
         protected override void OnValidAwake()
         {
             _inputActions = new();
@@ -29,6 +36,23 @@ namespace ZooTycoon.Input
 
         private void OnEnable() => _inputActions.Enable();
         private void OnDisable() => _inputActions.Disable();
+
+        public static bool IsPointerOverUI()
+        {
+            var eventSystem = EventSystem.current;
+            if (eventSystem == null) { return false; }
+            if (!_pointerEventDataLookup.TryGetValue(eventSystem, out var pointerEventData))
+            {
+                pointerEventData = new(eventSystem);
+                _pointerEventDataLookup[eventSystem] = pointerEventData;
+            }
+            pointerEventData.position = Pointer.current.position.ReadValue();
+
+            _raycastResults.Clear();
+            eventSystem.RaycastAll(pointerEventData, _raycastResults);
+            Debug.Log($"Raycast result: {_raycastResults.JoinToString(r => r.gameObject.name)}");
+            return _raycastResults.Exists(r => r.module is GraphicRaycaster);
+        }
 
         public static void Enable_PlayerMovement(bool enable)
         {

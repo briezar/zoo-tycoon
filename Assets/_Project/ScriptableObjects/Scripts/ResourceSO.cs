@@ -35,11 +35,16 @@ namespace ZooTycoon
 
         public string GetIconText() => RichTextUtils.EvaluateSpriteAsset(_spriteAsset.name, _spriteName);
         public string GetAmountText(int amount) => $"{amount.ToString().Colorize(_textColor)}";
-        public string GetIconAmountText(int amount, bool suffixIcon)
+
+        /// <summary>
+        /// E.g. 🪙15
+        /// </summary>
+        /// <param name="prefixIcon">Adds icon to the front or back</param>
+        public string GetIconAmountText(int amount, bool prefixIcon = true)
         {
             var iconText = GetIconText();
             var amountText = GetAmountText(amount);
-            return suffixIcon ? iconText + amountText : amountText + iconText;
+            return prefixIcon ? iconText + amountText : amountText + iconText;
         }
     }
 
@@ -54,22 +59,22 @@ namespace ZooTycoon
 
         public ResourceAmount(ResourceSO resource, int amount = 0) => (this.resource, this.amount) = (resource, amount);
 
+        /// <inheritdoc cref="ResourceSO.GetIconAmountText(int, bool)" />
+        public readonly string GetIconAmountText(bool prefixIcon = true) => resource.GetIconAmountText(amount, prefixIcon);
+
         private static void AssertEqualResource(ResourceAmount left, ResourceAmount right)
         {
             Assert.AreEqual(left.resource, right.resource, $"Cannot operate on ResourceAmount values with different resources: '{left.resource}' != '{right.resource}'");
         }
 
-        public static ResourceAmount operator +(ResourceAmount left, ResourceAmount right)
-        {
-            AssertEqualResource(left, right);
-            return new(left.resource, left.amount + right.amount);
-        }
+        public static ResourceAmount operator +(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() + right.AsIntAmount();
+        public static ResourceAmount operator -(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() + right.AsIntAmount();
+        public static bool operator >(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() > right.AsIntAmount();
+        public static bool operator <(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() < right.AsIntAmount();
+        public static bool operator >=(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() >= right.AsIntAmount();
+        public static bool operator <=(ResourceAmount left, ResourceAmount right) => left.AsIntAmount() <= right.AsIntAmount();
 
-        public static ResourceAmount operator -(ResourceAmount left, ResourceAmount right)
-        {
-            AssertEqualResource(left, right);
-            return new(left.resource, left.amount - right.amount);
-        }
+        private readonly IntAmount<ResourceSO> AsIntAmount() => (IntAmount<ResourceSO>)this;
 
         public static implicit operator IntAmount<ResourceSO>(ResourceAmount value) => new(value.resource, value.amount);
         public static implicit operator ResourceAmount(IntAmount<ResourceSO> value) => new(value.item, value.amount);

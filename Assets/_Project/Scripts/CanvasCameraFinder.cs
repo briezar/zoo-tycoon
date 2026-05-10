@@ -1,11 +1,15 @@
+using EditorAttributes;
 using UnityEngine;
 
 namespace ZooTycoon
 {
     [RequireComponent(typeof(Canvas))]
-    public class CanvasMainCameraFinder : MonoBehaviour
+    public class CanvasCameraFinder : MonoBehaviour
     {
         private Canvas _canvas;
+
+        [TagDropdown]
+        public string Tag = "MainCamera";
 
         private void Awake()
         {
@@ -14,7 +18,7 @@ namespace ZooTycoon
 
         private void Start()
         {
-            _canvas.worldCamera = Camera.main;
+            _canvas.worldCamera = Camera.allCameras.Find(c => c.CompareTag(Tag));
         }
     }
 }

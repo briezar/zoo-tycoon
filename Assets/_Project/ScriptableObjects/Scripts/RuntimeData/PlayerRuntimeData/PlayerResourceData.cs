@@ -19,6 +19,18 @@ namespace ZooTycoon.RuntimeData
         public readonly SourcedAction<ResourceSO, IntChangeInfo> OnCurrentAmountChanged = new();
         public readonly SourcedAction<ResourceSO, IntChangeInfo> OnMaxAmountChanged = new();
 
+        public bool HasEnoughResource(ResourceAmount resourceAmount) => CurrentAmounts.Get(resourceAmount.resource) >= resourceAmount;
+        public bool HasEnoughResources(params ResourceAmount[] resourceAmounts) => HasEnoughResources(resourceAmounts.AsEnumerable());
+        public bool HasEnoughResources(IEnumerable< ResourceAmount> resourceAmounts)
+        {
+            if (resourceAmounts.IsNullOrEmpty()) { return true; }
+
+            return resourceAmounts
+                .GroupBy(r => r.resource)
+                .Select(g => new ResourceAmount(g.Key, g.Sum(r => r.amount)))
+                .All(HasEnoughResource);
+        }
+
         public void SetMaxResourceAmount(ResourceAmount maxResourceAmount)
         {
             var resource = maxResourceAmount.resource;

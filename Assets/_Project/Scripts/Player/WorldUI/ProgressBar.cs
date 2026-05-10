@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
@@ -25,15 +26,25 @@ namespace ZooTycoon
 
         private Tween _progressTween;
 
-        public void StopProgress()
+        public async UniTask Show()
         {
-            if (_progressTween.isAlive)
-            {
-                _progressTween.Stop();
-            }
+            gameObject.SetActive(true);
         }
 
+        public async UniTask Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void StopProgress()
+        {
+            _progressTween.Stop();
+        }
+
+        public UniTask RunProgressNormalized(float to, TimeSpan duration) => RunProgressNormalized(to, (float)duration.TotalSeconds);
         public UniTask RunProgressNormalized(float to, float duration) => RunProgressNormalized(Slider.normalizedValue, to, duration);
+
+        public UniTask RunProgressNormalized(float from, float to, TimeSpan duration) => RunProgressNormalized(from, to, (float)duration.TotalSeconds);
         public async UniTask RunProgressNormalized(float from, float to, float duration)
         {
             _progressTween = Tween.Custom(Slider, from, to, duration, (slider, value) => slider.normalizedValue = value);

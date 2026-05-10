@@ -1,23 +1,27 @@
 using EditorAttributes;
+using GameDevKit;
 using UnityEngine;
 
 namespace ZooTycoon
 {
-    public class CameraFacer : MonoBehaviour
+    public class CameraFacer : AdvancedBehaviour
     {
-        [HelpBox("Defaults to Camera.main if not assigned")]
+        [HelpBox("Defaults to Camera with Tag if not assigned")]
         public Camera TargetCamera;
-        public bool FaceOnStart = true;
+
+        [TagDropdown]
+        public string Tag = "MainCamera";
+
+        public bool FaceOnEnable = true;
         public bool UseUpdate = true;
 
-        private void Start()
+        protected override void OnStartOrEnable()
         {
             if (TargetCamera == null)
             {
-                TargetCamera = Camera.main;
+                TargetCamera = Camera.allCameras.Find(c => c.CompareTag(Tag));
             }
-
-            if (FaceOnStart) { FaceCamera(); }
+            if (FaceOnEnable) { FaceCamera(); }
         }
 
         private void LateUpdate()

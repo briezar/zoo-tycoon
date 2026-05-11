@@ -29,10 +29,12 @@ namespace ZooTycoon
         public async UniTask Show()
         {
             gameObject.SetActive(true);
+            await Tween.Scale(transform, Vector3.one, 0.5f, Ease.OutBack);
         }
 
         public async UniTask Hide()
         {
+            await Tween.Scale(transform, Vector3.zero, 0.5f, Ease.InBack);
             gameObject.SetActive(false);
         }
 
@@ -47,7 +49,7 @@ namespace ZooTycoon
         public UniTask RunProgressNormalized(float from, float to, TimeSpan duration) => RunProgressNormalized(from, to, (float)duration.TotalSeconds);
         public async UniTask RunProgressNormalized(float from, float to, float duration)
         {
-            _progressTween = Tween.Custom(Slider, from, to, duration, (slider, value) => slider.normalizedValue = value);
+            _progressTween = Tween.Custom(Slider, from, to, duration, (slider, value) => slider.normalizedValue = value, Ease.Linear);
             await _progressTween;
         }
     }

@@ -53,13 +53,18 @@ namespace ZooTycoon.UI
 
         private void OnDisable()
         {
-            _playerData.ResourceData.OnCurrentAmountChanged.Unsubscribe(this);
+            _playerData.ResourceData.OnCurrentAmountChanged.Clear(this);
         }
 
         private void HandleResourceChanged(ResourceSO resource, IntChangeInfo info)
         {
             if (resource != ResourceSO_Ref.Energy) { return; }
             Tween.UISliderValue(_energySlider, info.previous, info.current, 0.5f);
+
+            if (info.Diff < 0)
+            {
+                Tween.PunchLocalPosition(_energySlider.transform, Vector3.one * 3, 0.5f);
+            }
         }
 
         private void HandleMaxResourceChanged(ResourceSO resource, IntChangeInfo info) => _energySlider.maxValue = info.current;
@@ -78,7 +83,7 @@ namespace ZooTycoon.UI
         }
 
         private void UpdateFillColor() => _fillImg.color = GetProgressColor(_energySlider.normalizedValue);
-        private void UpdateEnergyText() => _energyText.text = $"{_energySlider.value}";
+        private void UpdateEnergyText() => _energyText.text = $"{Mathf.FloorToInt(_energySlider.value)}";
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {

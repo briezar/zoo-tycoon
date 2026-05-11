@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
 using ZooTycoon.UI;
 
@@ -10,9 +11,12 @@ namespace ZooTycoon
     {
         private void Start()
         {
+            PrimeTweenConfig.warnTweenOnDisabledTarget = false;
+            PrimeTweenConfig.warnEndValueEqualsCurrent = false;
+
             PrepareScene();
         }
-        
+
         public override async UniTask PrepareScene(Action<ProgressInfo> progressCallback = null)
         {
             // await UniTask.WaitUntil(() => Services.IsReady);

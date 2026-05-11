@@ -4,7 +4,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameDevKit;
 using UnityEngine;
-using ZooTycoon.RuntimeData;
 
 namespace ZooTycoon
 {
@@ -39,5 +38,6 @@ namespace ZooTycoon
     {
         public ResourceAmount[] clearCosts;
         public SerializableTimeSpan clearTime;
+        public ResourceAmount[] clearRewards;
     }
 }

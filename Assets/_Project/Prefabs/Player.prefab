@@ -276,6 +276,7 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 6754171819818352935}
   <Movement>k__BackingField: {fileID: 5601065360187516722}
   <UI>k__BackingField: {fileID: 5309253693211999499}
+  _clearDebrisQuest: {fileID: 11400000, guid: 36ab8d286581361499fc860e5c7fc42c, type: 2}
   _playerData: {fileID: 0}
   _gameData: {fileID: 0}
 --- !u!114 &5601065360187516722
@@ -305,6 +306,7 @@ MonoBehaviour:
     <AutoReleaseTime>k__BackingField: 1
   WalkSpeed: 9
   RunSpeed: 15
+  NearDestinationDistance: 1
 --- !u!114 &6754171819818352935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,7 +744,7 @@ RectTransform:
   m_Father: {fileID: 6927884681786773907}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.538, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.00048828125, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using ZooTycoon.AI;
 using ZooTycoon.Input;
+using ZooTycoon.QuestSystem;
 
 namespace ZooTycoon
 {
@@ -63,6 +64,8 @@ namespace ZooTycoon
             InputManager.PlayerMovement.Move_ClickHold.performed += HandleOnClickHold;
             _linkMover.OnLinkStart.AddListener(HandleOnOffMeshLinkStart);
             _linkMover.OnLinkEnd.AddListener(HandleOnOffMeshLinkEnd);
+
+            StoryDirector.OnStepIntroStarted[this] += (_) => _agent.ResetPath();
         }
 
         private void HandleOnClick(InputAction.CallbackContext context)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace ZooTycoon.UI
@@ -19,19 +20,12 @@ namespace ZooTycoon.UI
 
         public Action OnClose;
 
-        protected override void OnShow()
-        {
-            Anim.PlayAppear();
-        }
-
-        protected override void OnHide()
-        {
-            Anim.PlayDisappear();
-        }
+        protected override UniTask OnShow() => Anim.PlayAppear();
+        protected override UniTask OnHide() => Anim.PlayDisappear();
 
         public virtual void Click_Close()
         {
-            UIManager.Hide(this);
+            UIManager.HideUI(this);
             OnClose?.Invoke();
             OnClose = null;
         }

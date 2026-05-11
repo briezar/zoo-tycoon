@@ -53,6 +53,9 @@ MonoBehaviour:
       amount: 5
     clearTime:
       _durationMs: 2000
+    clearRewards:
+    - resource: {fileID: 11400000, guid: bbbd2ab2290f0144ba9b7df7fceaffaa, type: 2}
+      amount: 100
   <InteractionUI>k__BackingField: {fileID: 1918192609389898650}
   _clearFx: {fileID: 370803500981130378, guid: d7d6379b2b5c99f4ca00a67ec0ee226a, type: 3}
 --- !u!114 &7630385555572080965

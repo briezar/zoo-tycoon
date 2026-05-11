@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0675d0df596f334d8c38a0431fabf6e, type: 3}
+  m_Name: Quest_1_2
+  m_EditorClassIdentifier: 
+  <QuestId>k__BackingField: 
+  <DisplayName>k__BackingField: First Habitat
+  <Description>k__BackingField: Build a habitat for your animals
+  <Icon>k__BackingField: {fileID: 0}
+  <PrerequisiteQuests>k__BackingField:
+  - {fileID: 11400000, guid: 36ab8d286581361499fc860e5c7fc42c, type: 2}
+  <Objective>k__BackingField:
+    <Definition>k__BackingField: {fileID: 11400000, guid: e316108a000e8fc44afa36222d824591, type: 2}
+    <Target>k__BackingField: 1
+    _description:
+      BaseText: Build {0} Habitat
+      StringFormatEntries:
+      - rid: 5058316682070589605
+  <ResourceRewards>k__BackingField:
+  - resource: {fileID: 11400000, guid: 7c2f0c1dc4c94de4d8eed8b36cbbfe87, type: 2}
+    amount: 10
+  <AcceptDialogues>k__BackingField: []
+  <CompleteDialogues>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5058316682070589605
+      type: {class: TokenPathConverter, ns: GameDevKit, asm: GameDevKit}
+      data:
+        tokenPath: Target

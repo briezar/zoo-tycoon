@@ -226,10 +226,10 @@ namespace ZooTycoon.UI
             }
 
             view.gameObject.SetActive(true);
-            (view as IUIView).OnShow();
+            var showTask = (view as IUIView).OnShow();
 
             SetInteractable(false);
-            await UniTask.WaitForSeconds(view.TransitionInDuration);
+            await showTask;
             SetInteractable(true);
         }
 
@@ -242,7 +242,7 @@ namespace ZooTycoon.UI
             return view;
         }
 
-        public async UniTask Hide<T>(bool immediate = false) where T : UIView, new()
+        public async UniTask HideUI<T>(bool immediate = false) where T : UIView, new()
         {
             var viewName = typeof(T).Name;
             if (!TryGetInstantiatedUI<T>(out var baseView))
@@ -250,10 +250,10 @@ namespace ZooTycoon.UI
                 Debug.LogWarning($"View does not exist: {viewName}");
                 return;
             }
-            await Hide(baseView, immediate);
+            await HideUI(baseView, immediate);
         }
 
-        public async UniTask Hide(UIView view, bool immediate = false)
+        public async UniTask HideUI(UIView view, bool immediate = false)
         {
             if (view == null)
             {
@@ -270,7 +270,7 @@ namespace ZooTycoon.UI
 
             _views.RemoveAll(v => v == null || v.gameObject == null || v == view);
 
-            (view as IUIView).OnHide();
+            var hideTask = (view as IUIView).OnHide();
 
             for (int i = _views.Count - 1; i >= 0; i--)
             {
@@ -295,7 +295,7 @@ namespace ZooTycoon.UI
             if (!immediate)
             {
                 SetInteractable(false);
-                await UniTask.WaitForSeconds(view.TransitionOutDuration);
+                await hideTask;
                 SetInteractable(true);
             }
 

@@ -25,7 +25,7 @@ namespace ZooTycoon.UI
         T PreloadUI<T>() where T : UIView, new();
         UniTask ShowUI(UIView view);
         T ShowUI<T>() where T : UIView, new();
-        UniTask Hide<T>(bool immediate = false) where T : UIView, new();
-        UniTask Hide(UIView view, bool immediate = false);
+        UniTask HideUI<T>(bool immediate = false) where T : UIView, new();
+        UniTask HideUI(UIView view, bool immediate = false);
     }
 }

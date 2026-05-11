@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d7cf04572c8df43b9e9ccf1d689e78, type: 3}
+  m_Name: QuestChain_1
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Troublesome Inheritance
+  <Steps>k__BackingField:
+  - <Quest>k__BackingField: {fileID: 11400000, guid: 36ab8d286581361499fc860e5c7fc42c, type: 2}
+    <IntroDialogues>k__BackingField:
+    - I just inherited this piece of land from my old man.
+    - Didn't think it was in such a bad state.
+    - Oh well, time for some cleanup!
+    <CompleteDialogues>k__BackingField:
+    - That wasn't so bad!
+    <AutoAcceptDelay>k__BackingField: 1
+  - <Quest>k__BackingField: {fileID: 11400000, guid: 52197a5d9b39b3e45a85ff964e2e1505, type: 2}
+    <IntroDialogues>k__BackingField:
+    - It's a bit empty here.
+    - Let's create a habitat.
+    <CompleteDialogues>k__BackingField:
+    - Now let's get some animals.
+    <AutoAcceptDelay>k__BackingField: 1
+  <AutoPlayDelay>k__BackingField: 1

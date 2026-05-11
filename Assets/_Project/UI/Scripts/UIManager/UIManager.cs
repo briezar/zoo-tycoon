@@ -34,10 +34,11 @@ namespace ZooTycoon.UI
         public static void EnableLoading(bool enable, string text = "") => _impl.EnableLoading(enable, text);
         public static T GetUI<T>() where T : UIView, new() => _impl.PreloadUI<T>();
         public static T PreloadUI<T>() where T : UIView, new() => _impl.PreloadUI<T>();
+        public static bool IsShowing<T>() => CurrentView is T;
         public static UniTask ShowUI(UIView view) => _impl.ShowUI(view);
         public static T ShowUI<T>() where T : UIView, new() => _impl.ShowUI<T>();
-        public static UniTask Hide<T>(bool immediate = false) where T : UIView, new() => _impl.Hide<T>(immediate);
-        public static UniTask Hide(UIView view, bool immediate = false) => _impl.Hide(view, immediate);
+        public static UniTask HideUI<T>(bool immediate = false) where T : UIView, new() => _impl.HideUI<T>(immediate);
+        public static UniTask HideUI(UIView view, bool immediate = false) => _impl.HideUI(view, immediate);
 
     }
 }

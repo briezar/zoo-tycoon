@@ -4,13 +4,14 @@ using UnityEngine;
 using GameDevKit.UI;
 using GameDevKit;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 namespace ZooTycoon.UI
 {
     public interface IUIView
     {
-        void OnShow();
-        void OnHide();
+        UniTask OnShow();
+        UniTask OnHide();
     }
 
     [RequireComponent(typeof(Canvas))]
@@ -37,11 +38,11 @@ namespace ZooTycoon.UI
         public virtual float TransitionOutDuration => 0;
 
         /// <summary> Called every ViewManager.Show() </summary>
-        protected virtual void OnShow() { }
-        protected virtual void OnHide() { }
+        protected virtual UniTask OnShow() => UniTask.CompletedTask;
+        protected virtual UniTask OnHide() => UniTask.CompletedTask;
 
-        void IUIView.OnShow() => OnShow();
-        void IUIView.OnHide() => OnHide();
+        UniTask IUIView.OnShow() => OnShow();
+        UniTask IUIView.OnHide() => OnHide();
 
     }
 }

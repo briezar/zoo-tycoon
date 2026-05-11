@@ -50,7 +50,6 @@ namespace ZooTycoon.Input
 
             _raycastResults.Clear();
             eventSystem.RaycastAll(pointerEventData, _raycastResults);
-            Debug.Log($"Raycast result: {_raycastResults.JoinToString(r => r.gameObject.name)}");
             return _raycastResults.Exists(r => r.module is GraphicRaycaster);
         }
 

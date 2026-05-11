@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameDevKit;
+using PrimeTween;
 using UnityEngine;
 using ZooTycoon.Input;
+using ZooTycoon.QuestSystem;
 using ZooTycoon.RuntimeData;
 
 namespace ZooTycoon
@@ -61,11 +63,14 @@ namespace ZooTycoon
                 UI.ProgressBar.Show();
                 await UI.ProgressBar.RunProgressNormalized(0, 1, debris.Config.clearTime);
                 debris.Clear();
+
+                _playerData.ResourceData.AddResources(debris.Config.clearRewards);
                 _gameData.TotalDebrisCleared.Value++;
 
-                await UniTask.WaitForSeconds(0.5f);
+                await Tween.Scale(UI.ProgressBar.transform, Vector3.one * 1.2f, 0.2f, Ease.OutSine, 2, CycleMode.Rewind);
                 UI.ProgressBar.Hide();
 
+                await UniTask.WaitForSeconds(0.5f);
                 InputManager.Enable_PlayerMovement(true);
             }
         }

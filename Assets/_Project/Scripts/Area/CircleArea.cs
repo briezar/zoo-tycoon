@@ -33,6 +33,8 @@ namespace ZooTycoon
                 centre.z + r * Mathf.Sin(angle));
         }
 
+#if UNITY_EDITOR
+
         // ── Gizmos ───────────────────────────────────────────────────────────
 
         protected override void DrawGizmoFilled()
@@ -57,7 +59,6 @@ namespace ZooTycoon
             }
         }
 
-#if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
             // Use Handles for a proper filled disc in the editor.
@@ -66,5 +67,6 @@ namespace ZooTycoon
             UnityEditor.Handles.DrawSolidDisc(transform.position, Vector3.up, _radius);
         }
 #endif
+
     }
 }

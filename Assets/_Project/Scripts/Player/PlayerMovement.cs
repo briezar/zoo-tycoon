@@ -68,6 +68,11 @@ namespace ZooTycoon
             StoryDirector.OnStepIntroStarted[this] += (_) => _agent.ResetPath();
         }
 
+        private void OnDestroy()
+        {
+            StoryDirector.OnStepIntroStarted.RemoveSource(this);
+        }
+
         private void HandleOnClick(InputAction.CallbackContext context)
         {
             var mousePos = Pointer.current.position.ReadValue();

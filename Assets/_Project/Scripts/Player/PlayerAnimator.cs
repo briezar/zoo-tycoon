@@ -1,3 +1,4 @@
+using System;
 using GameDevKit;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace ZooTycoon
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private SerializableAnimationHash _moveSpeedParam;
-        [SerializeField] private SerializableAnimationHash _attackAnim;
+        [SerializeField] private SerializableAnimationHash _attackAnim, _interactAnim;
 
         public void SyncMoveAnim(float currentSpeed, float walkSpeed)
         {
@@ -15,9 +16,8 @@ namespace ZooTycoon
             _animator.SetFloat(_moveSpeedParam, lerpedSpeed);
         }
 
-        public void PlayAttackAnim()
-        {
-            _animator.Play(_attackAnim, 1);
-        }
+        public void PlayAttackAnim() => _animator.Play(_attackAnim, 1);
+        public void PlayInteractAnim() => _animator.Play(_interactAnim, 1);
+
     }
 }

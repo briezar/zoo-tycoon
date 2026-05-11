@@ -33,7 +33,7 @@ namespace ZooTycoon.UI
         [SerializeField] private HabitatPlacementConfirmPopup _confirmPopup;
         [SerializeField] private Grid _grid;
 
-        [SerializeField] private QuestObjectiveDefinitionSO _buildHabitatObjective;
+        [SerializeField] private ObjectiveDefinitionSO _buildHabitatObjective;
 
         [TagDropdown]
         [SerializeField] private string _placementCameraTag = "MainCamera";
@@ -132,18 +132,17 @@ namespace ZooTycoon.UI
 
         private void ConfirmPlacement()
         {
-            HidePopupAndCleanupAsync(confirmed: true).Forget();
+            HidePopupAndCleanupAsync(confirmed: true);
         }
 
         private void CancelPlacement()
         {
-            HidePopupAndCleanupAsync(confirmed: false).Forget();
+            HidePopupAndCleanupAsync(confirmed: false);
         }
 
         private async UniTaskVoid HidePopupAndCleanupAsync(bool confirmed)
         {
             await _confirmPopup.HideAsync();
-            InputManager.Enable_PlayerMovement(true);
 
             if (confirmed)
             {
@@ -154,6 +153,10 @@ namespace ZooTycoon.UI
             DestroyPreview();
             _state = PlacementState.Idle;
             _currentDefinition = null;
+
+            await UniTask.WaitForSeconds(0.25f);
+
+            InputManager.Enable_PlayerMovement(true);
         }
 
         private void SpawnHabitat()
@@ -161,7 +164,7 @@ namespace ZooTycoon.UI
             if (_previewInstance == null || _currentDefinition == null) { return; }
             Instantiate(_currentDefinition.HabitatPrefab, _previewInstance.transform.position, _previewInstance.transform.rotation);
 
-            QuestManager.Instance.IncreaseObjective(_buildHabitatObjective, 1);
+            QuestRegistrySO.Instance.IncreaseObjective(_buildHabitatObjective, 1);
         }
 
         private void DeductResources()

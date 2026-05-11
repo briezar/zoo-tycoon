@@ -11,7 +11,8 @@ namespace ZooTycoon
     public class PolygonArea : Area
     {
         [Tooltip("Local-space XZ vertices defining the polygon. Y is ignored.")]
-        [SerializeField] private List<Vector2> _vertices = new()
+        [SerializeField]
+        private List<Vector2> _vertices = new()
         {
             new(-5f,  5f),
             new( 5f,  5f),
@@ -71,7 +72,7 @@ namespace ZooTycoon
 
         private Bounds2D GetLocalAABB()
         {
-            Vector2 min = new(float.MaxValue,  float.MaxValue);
+            Vector2 min = new(float.MaxValue, float.MaxValue);
             Vector2 max = new(float.MinValue, float.MinValue);
             foreach (Vector2 v in _vertices)
             {
@@ -89,6 +90,8 @@ namespace ZooTycoon
             public readonly Vector2 max;
             public Bounds2D(Vector2 min, Vector2 max) { this.min = min; this.max = max; }
         }
+
+#if UNITY_EDITOR
 
         // ── Gizmos ───────────────────────────────────────────────────────────
 
@@ -109,7 +112,6 @@ namespace ZooTycoon
             }
         }
 
-#if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
@@ -129,5 +131,6 @@ namespace ZooTycoon
             DrawGizmoWire();
         }
 #endif
+
     }
 }

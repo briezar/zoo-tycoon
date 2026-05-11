@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace ZooTycoon.QuestSystem
         [field: Header("In-game tracking")]
         [field: SerializeField] public int CurrentIndex { get; private set; } = -1;
 
+        [field: SerializeField] public bool AutoPlay { get; private set; }
+
         public static StoryDirector current { get; private set; }
 
         public static readonly SourcedAction<QuestDefinitionSO> OnStepIntroStarted = new();
@@ -23,14 +26,19 @@ namespace ZooTycoon.QuestSystem
         public static readonly SourcedAction<QuestInstance> OnStepCompleted = new();
         public static readonly SourcedAction<QuestChainSO> OnQuestChainCompleted = new();
 
+        public static event Func<QuestDefinitionSO, UniTask> WaitBeforeQuestCompleteTask;
+
         private DialogueOverlay _dialoguePopup;
 
         private void OnEnable() => current = this;
 
         private IEnumerator Start()
         {
-            yield return YieldCollection.WaitForSeconds(QuestChain.AutoPlayDelay);
-            StartQuestChain();
+            if (AutoPlay)
+            {
+                yield return YieldCollection.WaitForSeconds(QuestChain.AutoPlayDelay);
+                StartQuestChain();
+            }
         }
 
         public void StartQuestChain()
@@ -50,18 +58,23 @@ namespace ZooTycoon.QuestSystem
 
             yield return PlayDialoguesRoutine(step.IntroDialogues);
 
-            QuestManager.Instance.TryAcceptQuest(step.Quest, out var quest);
+            QuestRegistrySO.Instance.TryAcceptQuest(step.Quest, out var quest);
 
             OnStepStarted?.Invoke(new(null, quest));
 
             object source = new();
             quest.OnQuestCompleted[source] += () =>
             {
-                quest.OnQuestCompleted.Clear(source);
+                quest.OnQuestCompleted.RemoveSource(source);
 
                 StartCoroutine(QuestCompleteRoutine());
                 IEnumerator QuestCompleteRoutine()
                 {
+                    if (WaitBeforeQuestCompleteTask != null)
+                    {
+                        yield return WaitBeforeQuestCompleteTask(quest.Definition).ToCoroutine();
+                    }
+
                     yield return YieldCollection.WaitForSeconds(0.25f);
                     yield return PlayDialoguesRoutine(step.CompleteDialogues);
                     OnStepCompleted?.Invoke(quest);

@@ -29,6 +29,9 @@ namespace ZooTycoon.Input
         private static readonly List<RaycastResult> _raycastResults = new();
         private static readonly Dictionary<EventSystem, PointerEventData> _pointerEventDataLookup = new();
 
+        private static readonly UsageCounter _playerMovementEnableCounter = new();
+        private static readonly UsageCounter _uiEnableCounter = new();
+
         protected override void OnValidAwake()
         {
             _inputActions = new();
@@ -57,16 +60,23 @@ namespace ZooTycoon.Input
         {
             if (!IsValid) { return; }
 
-            if (enable) { PlayerMovement.Enable(); }
-            else { PlayerMovement.Disable(); }
+            // Increase usage when enable==false
+            var isUsing = _playerMovementEnableCounter.Use(!enable, out var changed);
+            if (!changed) { return; }
+
+            if (isUsing) { PlayerMovement.Disable(); }
+            else { PlayerMovement.Enable(); }
         }
 
         public static void Enable_UI(bool enable)
         {
             if (!IsValid) { return; }
 
-            if (enable) { UI.Enable(); }
-            else { UI.Disable(); }
+            var isUsing = _uiEnableCounter.Use(!enable, out var changed);
+            if (!changed) { return; }
+
+            if (isUsing) { UI.Disable(); }
+            else { UI.Enable(); }
         }
 
         private static void EnsureInstance()

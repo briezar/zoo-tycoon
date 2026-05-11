@@ -34,7 +34,7 @@ namespace ZooTycoon
             UIManager.ShowUI<GameUI>();
             base.TransitionOut();
             await Tween.Custom(_cameraOrthoTweenSettings, (value) => _cineCam.Lens.OrthographicSize = value);
-            _storyDirector.gameObject.SetActive(true);
+            _storyDirector.StartQuestChain();
         }
 
         public override async UniTask PrepareScene(Action<ProgressInfo> progressCallback = null)

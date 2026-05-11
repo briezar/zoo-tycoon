@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using EditorAttributes;
 using GameDevKit;
-using GameDevKit.Editor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using GameDevKit.Editor;
+#endif
 
 namespace ZooTycoon
 {
@@ -18,7 +21,7 @@ namespace ZooTycoon
         {
             if (_instance == null)
             {
-                Debug.LogWarning($"No instance of {nameof(ScriptableObjectContainer)} found. Did you forget to add to the scene?");
+                Debug.LogError($"No instance of {nameof(ScriptableObjectContainer)} found. Did you forget to add one to the scene?");
                 return null;
             }
 
@@ -54,7 +57,6 @@ namespace ZooTycoon
 
         public static bool AssignIfNull<T>(ref T data) where T : ScriptableObject
         {
-            if (_instance == null) { return false; }
             if (data == null)
             {
                 data = Find<T>();

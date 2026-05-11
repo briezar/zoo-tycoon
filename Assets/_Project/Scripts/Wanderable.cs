@@ -14,7 +14,7 @@ namespace ZooTycoon
     public class Wanderable : MonoBehaviour
     {
         [Tooltip("How long the agent pauses at each destination before picking a new one.")]
-        public FloatRange IdleTime = new(1f, 3f);
+        public FloatRange IdleTime = new(2f, 5f);
 
         [Tooltip("How many times the system tries to find a valid NavMesh point before giving up this cycle.")]
         [SerializeField] private int _maxSampleAttempts = 10;
@@ -24,10 +24,21 @@ namespace ZooTycoon
 
         public Area Area;
 
+        public float NearDestinationDistance = 1f;
+        public bool WanderOnEnable;
+
         private NavMeshAgent _agent;
         private Coroutine _wanderCoroutine;
 
         private void Awake() => _agent = GetComponent<NavMeshAgent>();
+
+        private void OnEnable()
+        {
+            if (WanderOnEnable)
+            {
+                StartWandering();
+            }
+        }
 
         public void StartWandering() => StartWandering(Area);
         public void StartWandering(Area area)
@@ -59,11 +70,21 @@ namespace ZooTycoon
                 {
                     _agent.SetDestination(destination);
 
-                    // Wait until the agent arrives or gets stuck.
-                    yield return YieldCollection.WaitUntil(() =>
-                        !_agent.pathPending &&
-                        _agent.remainingDistance <= _agent.stoppingDistance &&
-                        (!_agent.hasPath || _agent.velocity.sqrMagnitude < 0.01f));
+                    var isNearDestination = false;
+                    while (true)
+                    {
+                        yield return YieldCollection.WaitUntil(() => !_agent.pathPending);
+
+                        var reachedDestination = _agent.remainingDistance <= _agent.stoppingDistance + 0.01f;
+                        isNearDestination = _agent.remainingDistance <= _agent.stoppingDistance + NearDestinationDistance;
+
+                        var stoppedMoving = !_agent.hasPath || _agent.velocity.sqrMagnitude <= 0.01f;
+
+                        if (reachedDestination) { break; }
+                        if (stoppedMoving && isNearDestination) { break; }
+
+                        yield return null;
+                    }
                 }
 
                 yield return YieldCollection.WaitForSeconds(IdleTime.GetRandom());

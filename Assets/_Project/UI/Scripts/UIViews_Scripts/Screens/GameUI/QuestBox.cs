@@ -16,20 +16,22 @@ namespace ZooTycoon.UI
 
         protected override void OnStartOrEnable()
         {
-            QuestManager.Instance.OnQuestAccepted[this] += (info) => HandleOnQuestAccepted(info);
-            QuestManager.Instance.OnQuestUpdated[this] += (quest, info) => UpdateQuestInfo(quest);
+            QuestRegistrySO.Instance.OnQuestAccepted[this] += (info) => HandleOnQuestAccepted(info);
+            QuestRegistrySO.Instance.OnQuestUpdated[this] += (quest, info) => UpdateQuestInfo(quest, info);
 
-            UpdateQuestInfo(QuestManager.Instance.CurrentQuest);
+            UpdateQuestInfo(QuestRegistrySO.Instance.CurrentQuest);
         }
 
         private void OnDisable()
         {
-            QuestManager.Instance?.OnQuestAccepted.Clear(this);
-            QuestManager.Instance?.OnQuestUpdated.Clear(this);
+            QuestRegistrySO.Instance?.OnQuestAccepted.RemoveSource(this);
+            QuestRegistrySO.Instance?.OnQuestUpdated.RemoveSource(this);
         }
 
-        private void UpdateQuestInfo(QuestInstance quest)
+        private void UpdateQuestInfo(QuestInstance quest, IntChangeInfo? info = null)
         {
+            if (QuestRegistrySO.Instance.CurrentQuest != quest) { return; }
+
             var text = quest == null
                 ? "Nothing to do now"
                 : $"{quest.Definition.Objective.Description}\n({quest.Current}/{quest.Definition.Objective.Target})";

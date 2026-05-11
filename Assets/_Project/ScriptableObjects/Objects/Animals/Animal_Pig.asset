@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a9e5de10155f44a9f723d4e075cfa2, type: 3}
+  m_Name: Animal_Pig
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Pig
+  _prefab: {fileID: 3976659349449203609, guid: 545a3038cbe063a429e772ae8afe38a6, type: 3}

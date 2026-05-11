@@ -37,7 +37,7 @@ namespace ZooTycoon.UI
 
         private void OnDisable()
         {
-            _playerData?.ResourceData.OnCurrentAmountChanged.Clear(this);
+            _playerData?.ResourceData.OnCurrentAmountChanged.RemoveSource(this);
         }
 
         /// <summary>Called by <see cref="HabitatBuildStrip"/> after instantiation.</summary>

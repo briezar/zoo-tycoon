@@ -26,7 +26,13 @@ MonoBehaviour:
     <StartDelay>k__BackingField: 1
     <IntroDialogues>k__BackingField:
     - It's a bit empty here.
-    - Let's create a habitat.
+    - Let's build a habitat.
     <CompleteDialogues>k__BackingField:
+    - Phew. That's a lot of work.
+  - <Quest>k__BackingField: {fileID: 11400000, guid: d0621b7f18e48cf44bdaee1537843110, type: 2}
+    <StartDelay>k__BackingField: 1
+    <IntroDialogues>k__BackingField:
     - Now let's get some animals.
+    <CompleteDialogues>k__BackingField:
+    - This place is looking livelier already!
   <AutoPlayDelay>k__BackingField: 1

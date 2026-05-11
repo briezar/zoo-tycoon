@@ -6,32 +6,6 @@ using UnityEngine.UI;
 
 namespace ZooTycoon
 {
-    public interface IInteractionUI
-    {
-        public static readonly HashSet<DebrisInteractionUI> ActiveUIs = new();
-
-        UniTask Show();
-        UniTask Hide();
-    }
-
-
-    /// <summary>
-    /// When this UI is shown, all other interaction UIs are hidden.
-    /// </summary>
-    public interface IModalInteractionUI : IInteractionUI
-    {
-        public static void HideAll()
-        {
-            foreach (var activeUI in ActiveUIs)
-            {
-                if (activeUI is IModalInteractionUI)
-                {
-                    activeUI.Hide();
-                }
-            }
-        }
-    }
-
     public class DebrisInteractionUI : MonoBehaviour, IModalInteractionUI
     {
         [field: SerializeField] public TextButton ClearDebrisBtn { get; private set; }

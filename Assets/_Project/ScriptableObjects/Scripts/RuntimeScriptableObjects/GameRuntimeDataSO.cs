@@ -16,13 +16,13 @@ namespace ZooTycoon.RuntimeData
         [field: SerializeField] public ObservableInt TotalDebrisCleared { get; private set; }
         [field: SerializeField] public List<HabitatDefinitionSO> AvailableHabitats { get; private set; }
 
-        [SerializeField] private QuestObjectiveDefinitionSO _clearDebrisObjective;
+        [SerializeField] private ObjectiveDefinitionSO _clearDebrisObjective;
 
         public readonly SourcedAction OnAvailableHabitatsChanged = new();
 
         private void OnEnable()
         {
-            TotalDebrisCleared.OnValueChanged[this] += (info) => QuestManager.Instance.IncreaseObjective(_clearDebrisObjective, info.Diff);
+            TotalDebrisCleared.OnValueChanged[this] += (info) => QuestRegistrySO.Instance.IncreaseObjective(_clearDebrisObjective, info.Diff);
         }
 
     }

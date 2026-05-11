@@ -32,6 +32,8 @@ namespace ZooTycoon
             return transform.TransformPoint(localPoint);
         }
 
+#if UNITY_EDITOR
+
         // ── Gizmos ───────────────────────────────────────────────────────────
 
         protected override void DrawGizmoFilled()
@@ -43,7 +45,7 @@ namespace ZooTycoon
         {
             Vector3 c = transform.position;
             Vector3 right = transform.right * _size.x * 0.5f;
-            Vector3 fwd   = transform.forward * _size.y * 0.5f;
+            Vector3 fwd = transform.forward * _size.y * 0.5f;
 
             Vector3 tl = c - right + fwd;
             Vector3 tr = c + right + fwd;
@@ -56,14 +58,13 @@ namespace ZooTycoon
             Gizmos.DrawLine(bl, tl);
         }
 
-#if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
 
             Vector3 c = transform.position;
-            Vector3 right = transform.right   * _size.x * 0.5f;
-            Vector3 fwd   = transform.forward * _size.y * 0.5f;
+            Vector3 right = transform.right * _size.x * 0.5f;
+            Vector3 fwd = transform.forward * _size.y * 0.5f;
 
             Vector3[] verts =
             {
@@ -77,5 +78,6 @@ namespace ZooTycoon
             UnityEditor.Handles.DrawAAConvexPolygon(verts);
         }
 #endif
+
     }
 }

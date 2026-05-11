@@ -173,8 +173,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetCamera: {fileID: 0}
   Tag: MainCamera
-  Mode: 1
+  Mode: 2
   Offset: {x: 0, y: 180, z: 0}
+  RotationOffset: 0
   FaceOnEnable: 1
   UseUpdate: 0
 --- !u!208 &7046049230174429453

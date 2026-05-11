@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ZooTycoon.QuestSystem
 {
-    [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/Quest/Quest Definition", order = 0)]
+    [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/QuestSystem/Quest Definition", order = 0)]
     public class QuestDefinitionSO : ScriptableObject
     {
         [field: SerializeField] public string QuestId { get; private set; }

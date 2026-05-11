@@ -43,17 +43,17 @@ namespace ZooTycoon.UI
             _energySlider.value = _playerData.ResourceData.CurrentAmounts.Get(ResourceSO_Ref.Energy).amount;
         }
 
+        private void OnDisable()
+        {
+            _playerData?.ResourceData.OnCurrentAmountChanged.RemoveSource(this);
+        }
+
         private void Update()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 _playerData.ResourceData.AddResource(new(ResourceSO_Ref.Energy, -10));
             }
-        }
-
-        private void OnDisable()
-        {
-            _playerData?.ResourceData.OnCurrentAmountChanged.Clear(this);
         }
 
         private void HandleResourceChanged(ResourceSO resource, IntChangeInfo info)

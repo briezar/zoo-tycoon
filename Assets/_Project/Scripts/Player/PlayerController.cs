@@ -4,10 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameDevKit;
-using PrimeTween;
 using UnityEngine;
-using ZooTycoon.Input;
-using ZooTycoon.QuestSystem;
 using ZooTycoon.RuntimeData;
 
 namespace ZooTycoon
@@ -34,46 +31,17 @@ namespace ZooTycoon
 
         private async UniTask HandleOnTargetReached(Collider collider)
         {
-            Component component = collider.attachedRigidbody == null ? collider : collider.attachedRigidbody;
-            if (component.TryGetComponent<Debris>(out var debris))
-            {
-                _interactionCts = new();
+            var component = collider.attachedRigidbody == null ? (Component)collider : collider.attachedRigidbody;
+            if (component.TryGetComponent<IInteractable>(out var interactable))
+            {                
+                Debug.Log($"Interacting with: {interactable.GetType().Name}");
 
-                await debris.Interact(_interactionCts.Token);
-                if (_interactionCts.IsCancellationRequested)
-                {
-                    return;
-                }
+                _interactionCts = new();
+                await interactable.Interact(this, _interactionCts.Token);
 
                 _interactionCts.Dispose();
                 _interactionCts = null;
-
-                var canClear = _playerData.ResourceData.HasEnoughResources(debris.Config.clearCosts);
-                if (!canClear)
-                {
-                    Debug.Log($"Insufficient resources to clear debris {debris}");
-                    return;
-                }
-
-                _playerData.ResourceData.AddResources(debris.Config.clearCosts.Select(c => c.Invert()));
-
-                InputManager.Enable_PlayerMovement(false);
-
-                debris.InteractionUI.Hide();
-                UI.ProgressBar.Show();
-                await UI.ProgressBar.RunProgressNormalized(0, 1, debris.Config.clearTime);
-                debris.Clear();
-
-                _playerData.ResourceData.AddResources(debris.Config.clearRewards);
-                _gameData.TotalDebrisCleared.Value++;
-
-                await Tween.Scale(UI.ProgressBar.transform, Vector3.one * 1.2f, 0.2f, Ease.OutSine, 2, CycleMode.Rewind);
-                UI.ProgressBar.Hide();
-
-                await UniTask.WaitForSeconds(0.5f);
-                InputManager.Enable_PlayerMovement(true);
             }
         }
-
     }
 }

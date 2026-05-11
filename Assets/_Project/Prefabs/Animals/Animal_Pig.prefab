@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4430399938480382260, guid: efd2a5b1aec3eaa429339366651a7c57, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1841165251949568527}
+    - target: {fileID: 4430399938480382260, guid: efd2a5b1aec3eaa429339366651a7c57, type: 3}
+      propertyPath: <Definition>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: aaedf16806fd8aa47982218995e7ed6d, type: 2}
+    - target: {fileID: 5710858113825961900, guid: efd2a5b1aec3eaa429339366651a7c57, type: 3}
+      propertyPath: _renderers.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5710858113825961900, guid: efd2a5b1aec3eaa429339366651a7c57, type: 3}
       propertyPath: '_renderers.Array.data[0]'
       value: 

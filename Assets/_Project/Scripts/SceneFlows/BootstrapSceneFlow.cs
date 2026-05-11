@@ -35,10 +35,12 @@ namespace ZooTycoon
 
             var splashUI = UIManager.ShowUI<SplashUI>();
 
+            await UniTask.NextFrame();
             await UniTaskUtils.WaitUntilStableFps();
 
             await UIManager.FadeTransition(FadeSetting.FadeOut());
 
+            await UniTask.WaitForSeconds(0.2f);
             splashUI.SetInfo("Loading game systems...");
             splashUI.RunProgress(0.2f, 1);
 

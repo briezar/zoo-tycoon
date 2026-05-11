@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566df8122cd18b545bd7a0ee3eb67289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 8.6
+  _radius: 8
 --- !u!1 &3548730211847517536
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wanderArea: {fileID: 2996773508470810434}
+  _capacity: 5
 --- !u!54 &3286898815062846696
 Rigidbody:
   m_ObjectHideFlags: 0

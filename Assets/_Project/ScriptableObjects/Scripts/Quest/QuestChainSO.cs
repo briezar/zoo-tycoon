@@ -13,7 +13,7 @@ namespace ZooTycoon.QuestSystem
     /// This is the primary tool for authored, story-driven progression
     /// (tutorial flow, campaign chapters, etc.)
     /// </summary>
-    [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/Quest/Quest Chain", order = 1)]
+    [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/QuestSystem/Quest Chain", order = 1)]
     public class QuestChainSO : ScriptableObject
     {
         [field: SerializeField] public string DisplayName { get; private set; }

@@ -8,30 +8,41 @@ using ZooTycoon.RuntimeData;
 
 namespace ZooTycoon.QuestSystem
 {
-    public class QuestManager : SingletonBehaviour<QuestManager>
+    [ResetOnExitPlayMode]
+    [RegisterToGlobalContainer]
+    [CreateAssetMenu(menuName = $"{ScriptableObjectConstants.MenuName}/QuestSystem/QuestRegistry")]
+    public class QuestRegistrySO : ScriptableObject
     {
         [Header("Optional")]
         [SerializeField] private PlayerRuntimeDataSO _playerData;
-
-        public static QuestManager Instance => _instance;
 
         public readonly SourcedAction<QuestInstance> OnQuestAccepted = new();
         public readonly SourcedAction<QuestInstance> OnQuestCompleted = new();
         public readonly SourcedAction<QuestInstance, IntChangeInfo> OnQuestUpdated = new();
 
+        [field: NonSerialized]
         public QuestInstance CurrentQuest { get; private set; }
 
-        private readonly List<QuestDefinitionSO> _completedQuests = new();
+        [SerializeField]
+        private List<QuestDefinitionSO> _completedQuests = new();
 
         [SerializeField]
         private List<QuestInstance> _acceptedQuests = new();
 
         public IReadOnlyList<QuestInstance> AcceptedQuests => _acceptedQuests;
 
-        private void Start()
+        protected PlayerRuntimeDataSO PlayerData
         {
-            ScriptableObjectContainer.AssignIfNull(ref _playerData);
+            get
+            {
+                ScriptableObjectContainer.AssignIfNull(ref _playerData);
+                return _playerData;
+            }
         }
+
+        public static QuestRegistrySO Instance { get; private set; }
+
+        private void OnEnable() => Instance = this;
 
         /// <summary>Try to accept a quest. Returns null if prerequisites are not met.</summary>
         public bool TryAcceptQuest(QuestDefinitionSO definition, out QuestInstance quest)
@@ -70,7 +81,7 @@ namespace ZooTycoon.QuestSystem
             return quest;
         }
 
-        public void IncreaseObjective(QuestObjectiveDefinitionSO objectiveDef, int amount = 1)
+        public void IncreaseObjective(ObjectiveDefinitionSO objectiveDef, int amount = 1)
         {
             foreach (var quest in _acceptedQuests)
             {
@@ -85,6 +96,11 @@ namespace ZooTycoon.QuestSystem
 
         private void HandleQuestCompleted(QuestInstance quest)
         {
+            if (CurrentQuest == quest)
+            {
+                CurrentQuest = null;
+            }
+
             _completedQuests.Add(quest.Definition);
             GrantRewards(quest.Definition);
 
@@ -92,9 +108,9 @@ namespace ZooTycoon.QuestSystem
             Debug.Log($"Quest completed: {quest.Definition.DisplayName}");
         }
 
-        protected virtual void GrantRewards(QuestDefinitionSO questDef)
+        protected void GrantRewards(QuestDefinitionSO questDef)
         {
-            _playerData.ResourceData.AddResources(questDef.ResourceRewards);
+            PlayerData.ResourceData.AddResources(questDef.ResourceRewards);
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ZooTycoon.UI
 {
-    public struct PopupBgDim
+    public struct OverlayBgDim
     {
         public GameObject gameObject;
         public readonly Transform transform => gameObject.transform;

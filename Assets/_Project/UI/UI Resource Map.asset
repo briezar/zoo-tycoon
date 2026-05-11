@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiResourceMap:
     m_Keys:
-    - ZooTycoon.UI.DialoguePopup
+    - ZooTycoon.UI.DialogueOverlay
     - ZooTycoon.UI.GameUI
     m_Values:
-    - UIViews_Prefabs/Popups/DialoguePopup
+    - UIViews_Prefabs/Overlays/DialogueOverlay
     - UIViews_Prefabs/Screens/GameUI
   _uiFolder:
     _folderAsset: {fileID: 102900000, guid: 02b5cfec45c769843b757abb0bed22e8, type: 3}

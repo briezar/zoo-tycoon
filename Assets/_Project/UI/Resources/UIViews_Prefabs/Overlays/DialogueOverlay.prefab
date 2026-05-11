@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 4916276084272359634}
   - component: {fileID: 1099425525562997461}
   m_Layer: 5
-  m_Name: DialoguePopup
+  m_Name: DialogueOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnHide>k__BackingField: 0
-  _showPopupBehaviour: 1
+  _showBehaviour: -1
   <CanShowMultiple>k__BackingField: 0
   _dialogueText: {fileID: 3057350794063208401}
 --- !u!223 &4916276084272359634

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ZooTycoon.UI
 {
-    public class GameUI : FullscreenUI
+    public class GameUI : ScreenUI
     {
         
     }

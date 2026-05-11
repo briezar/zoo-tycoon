@@ -23,7 +23,7 @@ namespace ZooTycoon.QuestSystem
         public static readonly SourcedAction<QuestInstance> OnStepCompleted = new();
         public static readonly SourcedAction<QuestChainSO> OnQuestChainCompleted = new();
 
-        private DialoguePopup _dialoguePopup;
+        private DialogueOverlay _dialoguePopup;
 
         private void OnEnable() => current = this;
 
@@ -92,7 +92,7 @@ namespace ZooTycoon.QuestSystem
                 yield return WaitForAnyKeyPressed();
             }
 
-            yield return UIManager.HideUI<DialoguePopup>().ToCoroutine();
+            yield return UIManager.HideUI<DialogueOverlay>().ToCoroutine();
             _dialoguePopup = null;
         }
 
@@ -100,7 +100,7 @@ namespace ZooTycoon.QuestSystem
         {
             if (_dialoguePopup == null)
             {
-                _dialoguePopup = UIManager.ShowUI<DialoguePopup>();
+                _dialoguePopup = UIManager.ShowUI<DialogueOverlay>();
                 _dialoguePopup.DialogueText = "";
                 yield return YieldCollection.WaitForSeconds(0.5f);
             }

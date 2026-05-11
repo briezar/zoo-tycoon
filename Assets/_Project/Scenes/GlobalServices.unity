@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 318357612}
   - component: {fileID: 318357613}
   m_Layer: 5
-  m_Name: UILayer
+  m_Name: ScreenUILayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 512690036}
   - component: {fileID: 512690035}
   m_Layer: 5
-  m_Name: PopupDim
+  m_Name: OverlayDim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,11 +920,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 321790837}
   _eventSystem: {fileID: 1170456219}
-  _uiLayer: {fileID: 318357612}
-  _popupLayer: {fileID: 2135651856}
+  _screenUILayer: {fileID: 318357612}
+  _overlayUILayer: {fileID: 2135651856}
   _uiResourceMap: {fileID: 11400000, guid: f6dc5b77bcabb8e45bf94e80832efded, type: 2}
   _animation:
-    _popupBgDim: {fileID: 512690036}
+    _bgDim: {fileID: 512690036}
     _screenFader: {fileID: 1823075446}
   _loading: {fileID: 166805543}
 --- !u!1 &832575517
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 0}
-  _questInstances: []
+  _acceptedQuests: []
 --- !u!4 &1294477408
 Transform:
   m_ObjectHideFlags: 0
@@ -1531,7 +1531,7 @@ GameObject:
   - component: {fileID: 2135651856}
   - component: {fileID: 2135651857}
   m_Layer: 5
-  m_Name: PopupLayer
+  m_Name: OverlayUILayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1575,7 +1575,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -665137259
   m_SortingOrder: 0

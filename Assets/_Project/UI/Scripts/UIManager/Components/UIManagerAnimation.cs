@@ -11,18 +11,18 @@ namespace ZooTycoon.UI
     [Serializable]
     public class UIManagerAnimation
     {
-        [SerializeField] private CanvasGroup _popupBgDim;
+        [SerializeField] private CanvasGroup _bgDim;
         [SerializeField] private CanvasGroup _screenFader;
 
-        private PopupBgDim? _popupBgDimCache;
-        public PopupBgDim PopupBgDim
+        private OverlayBgDim? _popupBgDimCache;
+        public OverlayBgDim PopupBgDim
         {
             get
             {
-                _popupBgDimCache ??= new PopupBgDim
+                _popupBgDimCache ??= new OverlayBgDim
                 {
-                    gameObject = _popupBgDim.gameObject,
-                    canvas = _popupBgDim.GetComponent<Canvas>()
+                    gameObject = _bgDim.gameObject,
+                    canvas = _bgDim.GetComponent<Canvas>()
                 };
                 return _popupBgDimCache.Value;
             }
@@ -59,10 +59,10 @@ namespace ZooTycoon.UI
             return tween;
         }
 
-        public Tween FadePopupDim(bool fadeIn, float duration = AnimationTime.DefaultTransitionDuration)
+        public Tween FadeOverlayUIDim(bool fadeIn, float duration = AnimationTime.DefaultTransitionDuration)
         {
-            _popupBgDim.gameObject.SetActive(true);
-            var tween = Tween.Alpha(_popupBgDim, fadeIn ? 1 : 0, duration).OnComplete(() => _popupBgDim.gameObject.SetActive(fadeIn));
+            _bgDim.gameObject.SetActive(true);
+            var tween = Tween.Alpha(_bgDim, fadeIn ? 1 : 0, duration).OnComplete(() => _bgDim.gameObject.SetActive(fadeIn));
             return tween;
         }
 

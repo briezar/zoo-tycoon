@@ -7,7 +7,7 @@ using ZooTycoon.Input;
 
 namespace ZooTycoon.UI
 {
-    public class DialoguePopup : PopupUI
+    public class DialogueOverlay : OverlayUI
     {
         [SerializeField] private TMP_Text _dialogueText;
 

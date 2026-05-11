@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace ZooTycoon.UI
 {
-    public enum ShowPopupBehaviour
+    [Flags]
+    public enum ShowOverlayBehaviour
     {
         None = 0,
-        DimLowerUI = 1,
+        DimLowerUI = 1 << 0,
     }
 
     public struct FadeSetting

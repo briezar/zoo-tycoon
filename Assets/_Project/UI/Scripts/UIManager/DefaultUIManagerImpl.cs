@@ -16,7 +16,7 @@ namespace ZooTycoon.UI
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private EventSystem _eventSystem;
-        [SerializeField] private Transform _uiLayer, _popupLayer;
+        [SerializeField] private Transform _screenUILayer, _overlayUILayer;
         [SerializeField] private UIResourceMapSO _uiResourceMap;
         [SerializeField] private UIManagerAnimation _animation;
         [SerializeField] private Loading _loading;
@@ -45,7 +45,7 @@ namespace ZooTycoon.UI
 
             ReferenceResolution = GetComponentInChildren<CanvasScaler>().referenceResolution;
 
-            var layers = new Transform[] { _uiLayer, _popupLayer };
+            var layers = new Transform[] { _screenUILayer, _overlayUILayer };
 
             foreach (var view in layers.SelectMany(layer => layer.GetComponentsInChildren<UIView>(true)))
             {
@@ -63,9 +63,9 @@ namespace ZooTycoon.UI
 
         private Transform GetLayer(UIView view) => view switch
         {
-            IFullscreenUI => _uiLayer,
-            IPopupUI => _popupLayer,
-            _ => _uiLayer,
+            ScreenUI => _screenUILayer,
+            OverlayUI => _overlayUILayer,
+            _ => _screenUILayer,
         };
 
 #if UNITY_EDITOR
@@ -91,9 +91,11 @@ namespace ZooTycoon.UI
         {
             if (IsInteractable) { return; }
 
+            var debugConsole = IngameDebugConsole.DebugLogManager.Instance;
+            if (debugConsole == null) { return; }
+
             if (Pointer.current.press.wasPressedThisFrame)
             {
-                var debugConsole = IngameDebugConsole.DebugLogManager.Instance;
                 _debugLogPopup ??= debugConsole.GetComponentInChildren<IngameDebugConsole.DebugLogPopup>(true);
                 var debugConsolePopupPos = _debugLogPopup.transform.position;
                 if (Vector2.Distance(Pointer.current.position.ReadValue(), debugConsolePopupPos) < 80)
@@ -216,12 +218,12 @@ namespace ZooTycoon.UI
             _views.Add(view);
             view.transform.SetAsLastSibling();
 
-            if (view is PopupUI popup)
+            if (view is OverlayUI overlayUI)
             {
-                if (popup.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
+                if (overlayUI.ShowBehaviour.HasFlag(ShowOverlayBehaviour.DimLowerUI))
                 {
-                    _animation.PopupBgDim.PositionBelowUI(popup);
-                    _animation.FadePopupDim(true);
+                    _animation.PopupBgDim.PositionBelowUI(overlayUI);
+                    _animation.FadeOverlayUIDim(true);
                 }
             }
 
@@ -274,20 +276,18 @@ namespace ZooTycoon.UI
 
             for (int i = _views.Count - 1; i >= 0; i--)
             {
-                if (_views[i] is PopupUI popup)
+
+                if (_views[i] is OverlayUI upperOverlayUI && upperOverlayUI.ShowBehaviour.HasFlag(ShowOverlayBehaviour.DimLowerUI))
                 {
-                    if (popup.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
-                    {
-                        _animation.PopupBgDim.PositionBelowUI(popup);
-                        break;
-                    }
+                    _animation.PopupBgDim.PositionBelowUI(upperOverlayUI);
+                    break;
                 }
 
                 if (i == 0)
                 {
-                    if (view is PopupUI popupUI && popupUI.ShowPopupBehaviour is ShowPopupBehaviour.DimLowerUI)
+                    if (view is OverlayUI firstOverlayUI && firstOverlayUI.ShowBehaviour.HasFlag(ShowOverlayBehaviour.DimLowerUI))
                     {
-                        _animation.FadePopupDim(false);
+                        _animation.FadeOverlayUIDim(false);
                     }
                 }
             }
@@ -314,7 +314,7 @@ namespace ZooTycoon.UI
         {
             if (TryGetInstantiatedUI<T>(out var view))
             {
-                if (view is not PopupUI popup || !popup.CanShowMultiple)
+                if (view is not OverlayUI overlayUI || !overlayUI.CanShowMultiple)
                 {
                     return view;
                 }

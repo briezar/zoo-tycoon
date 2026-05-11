@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace ZooTycoon.UI
 {
-    public interface IPopupUI
+    public interface IOverlayUI
     {
-        ShowPopupBehaviour ShowPopupBehaviour { get; }
+        ShowOverlayBehaviour ShowBehaviour { get; }
     }
 
-    public abstract class PopupUI : UIView, IPopupUI
+    public abstract class OverlayUI : UIView, IOverlayUI
     {
-        [SerializeField] private ShowPopupBehaviour _showPopupBehaviour;
+        [SerializeField] private ShowOverlayBehaviour _showBehaviour;
         [field: SerializeField] public bool CanShowMultiple { get; private set; }
 
-        public ShowPopupBehaviour ShowPopupBehaviour => _showPopupBehaviour;
+        public ShowOverlayBehaviour ShowBehaviour => _showBehaviour;
 
         public Action OnClose;
 

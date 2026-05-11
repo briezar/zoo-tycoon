@@ -16,9 +16,11 @@ MonoBehaviour:
     m_Keys:
     - ZooTycoon.UI.DialogueOverlay
     - ZooTycoon.UI.GameUI
+    - ZooTycoon.UI.SplashUI
     m_Values:
     - UIViews_Prefabs/Overlays/DialogueOverlay
     - UIViews_Prefabs/Screens/GameUI
+    - UIViews_Prefabs/Screens/SplashUI
   _uiFolder:
     _folderAsset: {fileID: 102900000, guid: 02b5cfec45c769843b757abb0bed22e8, type: 3}
     _folderPath: Assets/_Project/UI/Resources/UIViews_Prefabs

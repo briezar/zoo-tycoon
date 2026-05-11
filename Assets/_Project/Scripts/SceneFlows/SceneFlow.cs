@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GameDevKit.ObjectReferences;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ZooTycoon.UI;
 
 namespace ZooTycoon
 {
@@ -19,17 +20,9 @@ namespace ZooTycoon
         private void OnDisable() => _activeSceneFlows.Remove(this);
 
         public virtual UniTask PrepareScene(Action<ProgressInfo> progressCallback = null) => UniTask.CompletedTask;
-        public virtual UniTask TransitionIn()
-        {
-            return UniTask.CompletedTask;
-            // return UIManager.FadeTransition(FadeSetting.FadeIn());
-        }
 
-        public virtual UniTask TransitionOut()
-        {
-            return UniTask.CompletedTask;
-            // return UIManager.FadeTransition(FadeSetting.FadeOut());
-        }
+        public virtual UniTask TransitionIn() => UIManager.FadeTransition(FadeSetting.FadeIn());
+        public virtual UniTask TransitionOut() => UIManager.FadeTransition(FadeSetting.FadeOut());
 
         public void SetActiveScene()
         {

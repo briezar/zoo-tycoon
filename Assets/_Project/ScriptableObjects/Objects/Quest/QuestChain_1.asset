@@ -15,18 +15,18 @@ MonoBehaviour:
   <DisplayName>k__BackingField: Troublesome Inheritance
   <Steps>k__BackingField:
   - <Quest>k__BackingField: {fileID: 11400000, guid: 36ab8d286581361499fc860e5c7fc42c, type: 2}
+    <StartDelay>k__BackingField: 0
     <IntroDialogues>k__BackingField:
     - I just inherited this piece of land from my old man.
     - Didn't think it was in such a bad state.
     - Oh well, time for some cleanup!
     <CompleteDialogues>k__BackingField:
     - That wasn't so bad!
-    <AutoAcceptDelay>k__BackingField: 1
   - <Quest>k__BackingField: {fileID: 11400000, guid: 52197a5d9b39b3e45a85ff964e2e1505, type: 2}
+    <StartDelay>k__BackingField: 1
     <IntroDialogues>k__BackingField:
     - It's a bit empty here.
     - Let's create a habitat.
     <CompleteDialogues>k__BackingField:
     - Now let's get some animals.
-    <AutoAcceptDelay>k__BackingField: 1
   <AutoPlayDelay>k__BackingField: 1

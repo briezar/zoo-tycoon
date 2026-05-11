@@ -171,7 +171,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea0504904af24440b0ae8df1669df99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetCamera: {fileID: 0}
+  TargetCamera: {fileID: 0}
+  Tag: MainCamera
+  Mode: 1
+  Offset: {x: 0, y: 180, z: 0}
+  FaceOnEnable: 1
   UseUpdate: 0
 --- !u!208 &7046049230174429453
 NavMeshObstacle:

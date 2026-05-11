@@ -6,6 +6,7 @@ using GameDevKit.ObjectReferences;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using ZooTycoon.UI;
 
 namespace ZooTycoon
 {
@@ -13,8 +14,6 @@ namespace ZooTycoon
     {
         [SerializeField] private SceneReference _servicesScene;
         [SerializeField] private SceneReference _nextScene;
-        // [SerializeField] private SoundID _bgm;
-        // [SerializeField] private PlayerSaveSO _playerSave;
 
 #if UNITY_EDITOR
         private void Awake()
@@ -30,43 +29,36 @@ namespace ZooTycoon
         private async UniTaskVoid Start()
         {
             SceneManager.LoadScene(_servicesScene, LoadSceneMode.Additive);
-            // await UniTask.WaitUntil(() => Services.IsReady);
+            await UniTask.WaitUntil(() => UIManager.IsReady);
 
-            // _playerSave.LoadUserData();
-            // _playerSave.ImportUserData();
+            UIManager.FadeTransition(FadeSetting.FadeIn(0));
 
-            // UIManager.FadeTransition(FadeSetting.FadeIn(0));
-
-            // var splashUI = UIManager.ShowUI<SplashUI>();
+            var splashUI = UIManager.ShowUI<SplashUI>();
 
             await UniTaskUtils.WaitUntilStableFps();
 
-            // _bgm.Play();
-            // await UIManager.FadeTransition(FadeSetting.FadeOut());
+            await UIManager.FadeTransition(FadeSetting.FadeOut());
 
-            // splashUI.SetInfo("Loading game systems...");
-            // splashUI.RunProgress(0.1f, 1);
-            // // await FirebaseService.Init();
+            splashUI.SetInfo("Loading game systems...");
+            splashUI.RunProgress(0.2f, 1);
 
-            // splashUI.SetInfo("Loading assets...");
-            // splashUI.RunProgress(0.9f, 2f);
             var nextSceneFlow = await LoadScene(_nextScene, LoadSceneMode.Additive);
             nextSceneFlow.SetActiveScene();
 
-            // await sceneFlow.PrepareScene(info =>
-            // {
-            //     splashUI.RunProgress(info.TargetProgress, 0.25f);
-            //     splashUI.SetInfo(info.Message);
-            // });
+            await nextSceneFlow.PrepareScene(info =>
+            {
+                splashUI.RunProgress(info.TargetProgress, 0.25f);
+                splashUI.SetInfo(info.Message);
+            });
 
-            // await splashUI.RunProgress(1f, 0.25f);
+            await splashUI.RunProgress(1f, 0.25f);
 
-            // splashUI.SetInfo("Loading complete!");
-            // await UniTask.WaitForSeconds(0.2f);
+            splashUI.SetInfo("Loading complete!");
+            await UniTask.WaitForSeconds(0.2f);
 
             await nextSceneFlow.TransitionIn();
 
-            // UIManager.Hide(splashUI);
+            UIManager.HideUI(splashUI);
 
             await SceneManager.UnloadSceneAsync(gameObject.scene);
             await nextSceneFlow.TransitionOut();

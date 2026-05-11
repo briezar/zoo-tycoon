@@ -23,7 +23,7 @@ namespace ZooTycoon.QuestSystem
 
         private readonly List<QuestDefinitionSO> _completedQuests = new();
 
-        [SerializeField, ReadOnly]
+        [SerializeField]
         private List<QuestInstance> _acceptedQuests = new();
 
         public IReadOnlyList<QuestInstance> AcceptedQuests => _acceptedQuests;
@@ -68,6 +68,17 @@ namespace ZooTycoon.QuestSystem
                 quest.OnQuestCompleted[this] += () => HandleQuestCompleted(quest);
             }
             return quest;
+        }
+
+        public void IncreaseObjective(QuestObjectiveDefinitionSO objectiveDef, int amount = 1)
+        {
+            foreach (var quest in _acceptedQuests)
+            {
+                if (quest.Definition.Objective.Definition == objectiveDef)
+                {
+                    quest.Current += amount;
+                }
+            }
         }
 
         public bool IsCompleted(QuestDefinitionSO questDef) => GetQuest(questDef).IsComplete;

@@ -276,7 +276,6 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 6754171819818352935}
   <Movement>k__BackingField: {fileID: 5601065360187516722}
   <UI>k__BackingField: {fileID: 5309253693211999499}
-  _clearDebrisQuest: {fileID: 11400000, guid: 36ab8d286581361499fc860e5c7fc42c, type: 2}
   _playerData: {fileID: 0}
   _gameData: {fileID: 0}
 --- !u!114 &5601065360187516722
@@ -298,7 +297,7 @@ MonoBehaviour:
     m_Bits: 64
   _interactionLayer:
     serializedVersion: 2
-    m_Bits: 241
+    m_Bits: 113
   _animator: {fileID: 6754171819818352935}
   _markerPool:
     _template: {fileID: 4108656811684724095, guid: 266349774e944194baf57a905442e5ec, type: 3}

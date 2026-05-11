@@ -53,7 +53,7 @@ namespace ZooTycoon.UI
 
         private void OnDisable()
         {
-            _playerData.ResourceData.OnCurrentAmountChanged.Clear(this);
+            _playerData?.ResourceData.OnCurrentAmountChanged.Clear(this);
         }
 
         private void HandleResourceChanged(ResourceSO resource, IntChangeInfo info)

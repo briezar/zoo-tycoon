@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TotalDebrisCleared>k__BackingField:
     _value: 0
+  <AvailableHabitats>k__BackingField:
+  - {fileID: 11400000, guid: 59a95fe6131727c47a9b95b375abcd84, type: 2}
   _clearDebrisObjective: {fileID: 11400000, guid: b18278afe11b2614d88cc3aacc3bb6d8, type: 2}

@@ -62,6 +62,7 @@ namespace ZooTycoon.QuestSystem
                 StartCoroutine(QuestCompleteRoutine());
                 IEnumerator QuestCompleteRoutine()
                 {
+                    yield return YieldCollection.WaitForSeconds(0.25f);
                     yield return PlayDialoguesRoutine(step.CompleteDialogues);
                     OnStepCompleted?.Invoke(quest);
 

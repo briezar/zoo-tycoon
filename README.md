@@ -15,7 +15,7 @@ A narrative-driven isometric zoo builder made in Unity. You play as a young heir
 
 ## Gameplay
 
-[![Gameplay Video](docs/images/screenshot-5.png)](https://www.youtube.com/watch?v=Sl7c1rhr9dA)
+[![Gameplay Video](docs/images/video-thumbnail.png)](https://www.youtube.com/watch?v=Sl7c1rhr9dA)
 
 ---
 

@@ -17,15 +17,14 @@ namespace ZooTycoon.UI
         protected override void OnStartOrEnable()
         {
             QuestRegistrySO.Instance.OnQuestAccepted[this] += (info) => HandleOnQuestAccepted(info);
-            QuestRegistrySO.Instance.OnQuestUpdated[this] += (quest, info) => UpdateQuestInfo(quest, info);
-
-            UpdateQuestInfo(QuestRegistrySO.Instance.CurrentQuest);
+            QuestRegistrySO.Instance.OnQuestUpdated[this] = (quest, info) => UpdateQuestInfo(quest, info);
+            QuestRegistrySO.Instance.OnQuestUpdated.InvokeLatest(this);
         }
 
         private void OnDisable()
         {
-            QuestRegistrySO.Instance?.OnQuestAccepted.RemoveSource(this);
-            QuestRegistrySO.Instance?.OnQuestUpdated.RemoveSource(this);
+            QuestRegistrySO.Instance?.OnQuestAccepted.UnsubscribeSource(this);
+            QuestRegistrySO.Instance?.OnQuestUpdated.UnsubscribeSource(this);
         }
 
         private void UpdateQuestInfo(QuestInstance quest, IntChangeInfo? info = null)

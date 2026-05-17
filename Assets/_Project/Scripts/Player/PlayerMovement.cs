@@ -70,7 +70,7 @@ namespace ZooTycoon
 
         private void OnDestroy()
         {
-            StoryDirector.OnStepIntroStarted.RemoveSource(this);
+            StoryDirector.OnStepIntroStarted.UnsubscribeSource(this);
         }
 
         private void HandleOnClick(InputAction.CallbackContext context)

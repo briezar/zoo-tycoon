@@ -24,6 +24,7 @@ namespace ZooTycoon.UI
 
         protected override void OnStart()
         {
+            _energySlider.minValue = 0;
             ScriptableObjectContainer.AssignIfNull(ref _playerData);
             _energyText.gameObject.SetActive(false);
             _energySlider.onValueChanged.AddListener((_) =>
@@ -35,17 +36,17 @@ namespace ZooTycoon.UI
 
         protected override void OnStartOrEnable()
         {
-            _playerData.ResourceData.OnCurrentAmountChanged[this] += HandleResourceChanged;
+            // set maxValue before value, else value would be clamped by old maxValue
             _playerData.ResourceData.OnMaxAmountChanged[this] += HandleMaxResourceChanged;
+            _playerData.ResourceData.OnMaxAmountChanged.InvokeLatest(this);
 
-            _energySlider.minValue = 0;
-            _energySlider.maxValue = _playerData.ResourceData.MaxAmounts.Get(ResourceSO_Ref.Energy).amount;
-            _energySlider.value = _playerData.ResourceData.CurrentAmounts.Get(ResourceSO_Ref.Energy).amount;
+            _playerData.ResourceData.OnCurrentAmountChanged[this] += HandleResourceChanged;
+            _playerData.ResourceData.OnCurrentAmountChanged.InvokeLatest(this);
         }
 
         private void OnDisable()
         {
-            _playerData?.ResourceData.OnCurrentAmountChanged.RemoveSource(this);
+            _playerData?.ResourceData.OnCurrentAmountChanged.UnsubscribeSource(this);
         }
 
         private void Update()
@@ -67,7 +68,11 @@ namespace ZooTycoon.UI
             }
         }
 
-        private void HandleMaxResourceChanged(ResourceSO resource, IntChangeInfo info) => _energySlider.maxValue = info.current;
+        private void HandleMaxResourceChanged(ResourceSO resource, IntChangeInfo info)
+        {
+            if (resource != ResourceSO_Ref.Energy) { return; }
+            _energySlider.maxValue = info.current;
+        }
 
         private Color GetProgressColor(float ratio)
         {

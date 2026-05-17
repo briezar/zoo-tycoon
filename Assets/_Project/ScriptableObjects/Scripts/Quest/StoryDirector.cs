@@ -65,7 +65,7 @@ namespace ZooTycoon.QuestSystem
             object source = new();
             quest.OnQuestCompleted[source] += () =>
             {
-                quest.OnQuestCompleted.RemoveSource(source);
+                quest.OnQuestCompleted.UnsubscribeSource(source);
 
                 StartCoroutine(QuestCompleteRoutine());
                 IEnumerator QuestCompleteRoutine()

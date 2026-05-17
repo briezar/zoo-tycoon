@@ -32,7 +32,7 @@ namespace ZooTycoon.UI
 
         private void OnDisable()
         {
-            _playerData?.ResourceData.OnCurrentAmountChanged.RemoveSource(this);
+            _playerData?.ResourceData.OnCurrentAmountChanged.UnsubscribeSource(this);
         }
 
 

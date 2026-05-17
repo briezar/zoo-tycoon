@@ -24,14 +24,14 @@ namespace ZooTycoon.QuestSystem
 
         private void OnDestroy()
         {
-            StoryDirector.OnStepStarted.RemoveSource(this);
-            QuestRegistrySO.Instance.OnQuestCompleted.RemoveSource(this);
+            StoryDirector.OnStepStarted.UnsubscribeSource(this);
+            QuestRegistrySO.Instance.OnQuestCompleted.UnsubscribeSource(this);
         }
 
         private async UniTask HandleStepStarted(ValueChangeInfo<QuestInstance> info)
         {
             if (info.current.Definition != _obtainAnimalQuest) { return; }
-            StoryDirector.OnStepStarted.RemoveSource(this);
+            StoryDirector.OnStepStarted.UnsubscribeSource(this);
 
             StoryDirector.WaitBeforeQuestCompleteTask += WaitForCinematic;
 
@@ -57,7 +57,7 @@ namespace ZooTycoon.QuestSystem
         private async UniTask HandleQuestCompleted(QuestInstance quest)
         {
             if (quest.Definition != _obtainAnimalQuest) { return; }
-            QuestRegistrySO.Instance.OnQuestCompleted.RemoveSource(this);
+            QuestRegistrySO.Instance.OnQuestCompleted.UnsubscribeSource(this);
 
             await CinemachineUtils.LookAt(_animal.transform, 1f);
 

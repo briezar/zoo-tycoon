@@ -3,6 +3,9 @@
 A narrative-driven isometric zoo builder made in Unity. You play as a young heir returning to your late father's overgrown estate, clearing debris, constructing habitats, and building your own zoo from the ground up.
 
 ---
+## 🎮 Play in Browser
+
+Play the latest build at: https://briezar.github.io/zoo-tycoon/
 
 ## Screenshots
 
@@ -57,7 +60,6 @@ The game opens with a cinematic introducing the player to their inherited land b
 
 - **Engine:** Unity (URP)
 - **Language:** C#
-- **Platform:** PC (Windows) | Android | iOS
 
 ---
 

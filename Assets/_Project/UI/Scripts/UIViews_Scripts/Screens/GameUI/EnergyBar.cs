@@ -38,10 +38,10 @@ namespace ZooTycoon.UI
         {
             // set maxValue before value, else value would be clamped by old maxValue
             _playerData.ResourceData.OnMaxAmountChanged[this] += HandleMaxResourceChanged;
-            _playerData.ResourceData.OnMaxAmountChanged.InvokeLatest(this);
+            _energySlider.maxValue = _playerData.ResourceData.MaxAmounts.Get(ResourceSO_Ref.Energy).amount;
 
             _playerData.ResourceData.OnCurrentAmountChanged[this] += HandleResourceChanged;
-            _playerData.ResourceData.OnCurrentAmountChanged.InvokeLatest(this);
+            _energySlider.value = _playerData.ResourceData.CurrentAmounts.Get(ResourceSO_Ref.Energy).amount;
         }
 
         private void OnDisable()

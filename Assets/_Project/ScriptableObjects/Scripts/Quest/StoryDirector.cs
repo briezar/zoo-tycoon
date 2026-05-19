@@ -91,11 +91,10 @@ namespace ZooTycoon.QuestSystem
             };
         }
 
-        private IEnumerator WaitForAnyKeyPressed()
+        private IEnumerator WaitForPointerPressed()
         {
-            var pressed = false;
-            var anyKeyEvent = InputSystem.onAnyButtonPress.Call((t) => pressed = true);
-            yield return YieldCollection.WaitUntil(() => pressed);
+            yield return null;
+            yield return YieldCollection.WaitUntil(() => Pointer.current.press.wasPressedThisFrame);
         }
 
         private IEnumerator PlayDialoguesRoutine(IEnumerable<string> dialogueTexts)
@@ -103,7 +102,7 @@ namespace ZooTycoon.QuestSystem
             foreach (var text in dialogueTexts)
             {
                 yield return PlayDialogueRoutine(text);
-                yield return WaitForAnyKeyPressed();
+                yield return WaitForPointerPressed();
             }
 
             yield return UIManager.HideUI<DialogueOverlay>().ToCoroutine();

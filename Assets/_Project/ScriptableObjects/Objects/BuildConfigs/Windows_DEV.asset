@@ -10,30 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af5fee5a3e3cc4b219f43adae58a4bb1, type: 3}
-  m_Name: Android_DEV_APK
+  m_Name: Windows_DEV
   m_EditorClassIdentifier: 
   BuildConfig:
-    rid: 5058316630597042518
+    rid: 5058316873716990090
   references:
     version: 2
     RefIds:
-    - rid: 5058316630597042518
-      type: {class: AndroidBuildConfig, ns: GameDevKit.Editor.AppBuild, asm: GameDevKit.Editor}
+    - rid: 5058316873716990090
+      type: {class: WindowsBuildConfig, ns: GameDevKit.Editor.AppBuild, asm: GameDevKit.Editor}
       data:
         BuildFolder: Builds
         ExtraScriptingDefines:
         - DEV_BUILD
         BuildOptions: 524289
-        BuildTargetGroup: 7
-        BuildTarget: 13
-        BuildSuffix: _dev
-        AndroidBuildSettings:
-          BuildAppBundle: 0
-          BundleVersionCode: 0
-          MinSdkVersion: 0
-          TargetSdkVersion: 0
-          UseCustomKeystore: 1
-          KeystorePath: 
-          KeystorePass: 
-          KeyAliasName: 
-          KeyAliasPass: 
+        BuildTargetGroup: 1
+        BuildTarget: 19
+        BuildSuffix: 
+        WindowsBuildSettings:
+          BuildSubtarget: 2

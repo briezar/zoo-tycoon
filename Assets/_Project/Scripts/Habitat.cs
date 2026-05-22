@@ -5,7 +5,7 @@ namespace ZooTycoon
 {
     public class Habitat : MonoBehaviour
     {
-        [SerializeField] private Area _wanderArea;
+        [SerializeField] private Area2D _wanderArea;
         [SerializeField] private int _capacity = 5;
 
         private readonly List<Animal> _animals = new();

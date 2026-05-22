@@ -22,7 +22,7 @@ namespace ZooTycoon
         [Tooltip("Radius around the candidate point used when sampling the NavMesh.")]
         [SerializeField] private float _navMeshSampleRadius = 2f;
 
-        public Area Area;
+        public Area2D Area;
 
         public float NearDestinationDistance = 1f;
         public bool WanderOnEnable;
@@ -41,7 +41,7 @@ namespace ZooTycoon
         }
 
         public void StartWandering() => StartWandering(Area);
-        public void StartWandering(Area area)
+        public void StartWandering(Area2D area)
         {
             Area = area;
             _wanderCoroutine.Stop(this);

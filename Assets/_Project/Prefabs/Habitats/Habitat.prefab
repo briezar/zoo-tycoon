@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566df8122cd18b545bd7a0ee3eb67289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 8
+  PlaneNormal: {x: 0, y: 1, z: 0}
+  Radius: 8
 --- !u!1 &3548730211847517536
 GameObject:
   m_ObjectHideFlags: 0
